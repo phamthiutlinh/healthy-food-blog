@@ -1,12 +1,12 @@
 import fallbackImage from '../assets/images/recipe-placeholder.svg';
-import healthyBreakfastImage from '../assets/images/articles/healthy-breakfast-editorial.png';
+import healthyBreakfastImage from '../assets/images/articles/hero-meal-prep.png';
 import { registerSW } from 'virtual:pwa-register';
 
 registerSW({ immediate: true });
 
 const $ = (s, p = document) => p.querySelector(s);
 const $$ = (s, p = document) => [...p.querySelectorAll(s)];
-const imageSrc = (src) => src === 'assets/images/articles/healthy-breakfast-editorial.png' ? healthyBreakfastImage : src || fallbackImage;
+const imageSrc = (src) => src === 'assets/images/articles/hero-meal-prep.png' ? healthyBreakfastImage : src || fallbackImage;
 const imageFallback = `onerror="this.onerror=null;this.src='${fallbackImage}'"`;
 const parseArticleDate = (value) => {
   const [day, month, year] = (value || '00.00.0000').split('.').map(Number);
@@ -219,7 +219,59 @@ function initPWA() {
   }
 }
 
+function setSeoMeta({ title, description, image, url = window.location.href, siteName = 'Nhà bếp của Lyn' }) {
+  const seoTitle = title ? `${title} — ${siteName}` : siteName;
+  const seoDescription =
+    description || 'Những bài viết về bữa ăn lành mạnh, meal prep và lối sống khỏe mạnh của Nhà bếp của Lyn.';
+  const resolvedUrl = new URL(url, window.location.href).href;
+  const resolvedImage = image
+    ? (() => {
+        try {
+          return new URL(image, window.location.href).href;
+        } catch {
+          return image;
+        }
+      })()
+    : new URL(fallbackImage, window.location.href).href;
+
+  const setMetaTag = (attrName, attrValue, content) => {
+    let tag = document.head.querySelector(`meta[${attrName}="${attrValue}"]`);
+    if (!tag) {
+      tag = document.createElement('meta');
+      tag.setAttribute(attrName, attrValue);
+      document.head.appendChild(tag);
+    }
+    tag.setAttribute('content', content);
+  };
+
+  document.title = seoTitle;
+  setMetaTag('name', 'description', seoDescription);
+  setMetaTag('property', 'og:title', seoTitle);
+  setMetaTag('property', 'og:description', seoDescription);
+  setMetaTag('property', 'og:type', 'article');
+  setMetaTag('property', 'og:site_name', siteName);
+  setMetaTag('property', 'og:image', resolvedImage);
+  setMetaTag('property', 'og:url', resolvedUrl);
+  setMetaTag('name', 'twitter:card', 'summary_large_image');
+  setMetaTag('name', 'twitter:title', seoTitle);
+  setMetaTag('name', 'twitter:description', seoDescription);
+  setMetaTag('name', 'twitter:image', resolvedImage);
+
+  let canonical = document.head.querySelector('link[rel="canonical"]');
+  if (!canonical) {
+    canonical = document.createElement('link');
+    canonical.rel = 'canonical';
+    document.head.appendChild(canonical);
+  }
+  canonical.href = resolvedUrl;
+}
+
 async function home() {
+  setSeoMeta({
+    title: 'Nhà bếp của Lyn — Healthy lifestyle',
+    description: 'Những công thức healthy, meal prep và góc sống khỏe cho một nhịp ăn uống tự nhiên hơn.',
+    image: 'assets/images/hero-meal-prep.png'
+  });
   const [recipes, articles] = await Promise.all([data('recipes'), data('articles')]);
   const featuredContainer = $('#featured');
   if (featuredContainer) {
@@ -239,6 +291,11 @@ async function home() {
   }
 }
 async function recipesPage() {
+  setSeoMeta({
+    title: 'Công thức — Nhà bếp của Lyn',
+    description: 'Công thức bữa sáng, bữa trưa, bữa tối và ăn nhẹ giúp bạn nấu nhanh mà vẫn đủ đầy.',
+    image: 'assets/images/hero-meal-prep.png'
+  });
   const recipes = await data('recipes');
   const listContainer = $('#recipe-list');
   const sentinel = createSentinel('recipe-sentinel', 'Đang tải thêm công thức...', listContainer);
@@ -327,6 +384,11 @@ async function recipeDetail() {
     `<p class="text-[11px] font-bold uppercase tracking-[.15em] text-[var(--color-fern-500)]">${r.category} · ${r.difficulty || 'Dễ làm'} · ${r.prepTime + r.cookTime} phút</p><h1 class="font-['Playfair_Display'] text-[clamp(42px,6vw,76px)] leading-[1.12]">${r.title}</h1><p class="text-[19px] text-[#565a52]">${r.description}</p><div class="mt-5 flex flex-wrap gap-2">${d.tags.map((tag) => `<span class="chip">${tag}</span>`).join('')}</div><img class="my-[30px] h-[280px] w-full object-cover md:h-[450px] rounded-md" src="${imageSrc(r.image)}" ${imageFallback} alt="${r.title}"><div class="my-[30px] grid grid-cols-2 bg-white md:grid-cols-4"><div class="border-r border-[#e7e5df] p-[18px] text-center"><b class="block font-['Playfair_Display'] text-[24px] text-[var(--color-fern-500)]">${r.prepTime}'</b>chuẩn bị</div><div class="p-[18px] text-center md:border-r md:border-[#e7e5df]"><b class="block font-['Playfair_Display'] text-[24px] text-[var(--color-fern-500)]">${r.cookTime}'</b>nấu</div><div class="border-r border-[#e7e5df] p-[18px] text-center"><b class="block font-['Playfair_Display'] text-[24px] text-[var(--color-fern-500)]">${r.servings}</b>khẩu phần</div><div class="p-[18px] text-center"><b class="block font-['Playfair_Display'] text-[24px] text-[var(--color-fern-500)]">${r.calories}</b>kcal / phần</div></div><div class="grid gap-6 md:grid-cols-[1fr_270px] md:gap-[68px]"><div class="[&_h2]:mt-10 [&_h2]:font-['Playfair_Display'] [&_h2]:text-[30px] [&_li]:mb-[10px]"><h2 class="!mt-0">Về món này</h2><p>${d.intro}</p><h2>Vì sao bạn sẽ thích</h2>${list(d.why)}<h2>Nguyên liệu bạn cần</h2><p>Ưu tiên nguyên liệu tươi; bạn có thể thay thế linh hoạt nhưng nên giữ tỷ lệ tương tự để món vẫn cân bằng.</p>${list(r.ingredients)}<h2>Hướng dẫn từng bước</h2><ol>${r.steps.map((x, i) => `<li><b>Bước ${i + 1}: </b>${x}</li>`).join('')}</ol><h2>Biến tấu theo ý thích</h2>${list(d.variations)}<h2>Gợi ý dùng món</h2><p>${d.serving}</p><h2>Mẹo để món ngon hơn</h2>${list(d.tips)}<h2>Meal prep, bảo quản & hâm nóng</h2>${list(r.mealPrepTips)}<p>${d.storage}</p><div class="mt-8 rounded-xl bg-[#f1f4ed] p-5"><b class="text-[var(--color-fern-600)]">Lưu ý từ Lyn</b><p class="mt-2">${d.notes}</p></div><h2>Câu hỏi thường gặp</h2><div class="space-y-3">${d.faqs.map(([question, answer]) => `<details class="rounded-lg border border-[#e7e5df] bg-white px-4 py-3"><summary class="cursor-pointer font-semibold">${question}</summary><p class="mt-2 text-[#565a52]">${answer}</p></details>`).join('')}</div></div><aside class="h-max rounded-xl bg-[#e8dfd0] p-[25px] md:sticky md:top-24"><span class="text-[11px] font-bold uppercase tracking-[.12em] text-[var(--color-fern-500)]">Dinh dưỡng tham khảo</span><p><b>${r.protein}g</b> protein<br><b>${r.carbs}g</b> carbs<br><b>${r.fat}g</b> chất béo</p><p>Con số mang tính tham khảo và có thể thay đổi theo nguyên liệu bạn dùng.</p></aside></div>`;
 }
 async function articlesPage() {
+  setSeoMeta({
+    title: 'Góc sống khỏe — Nhà bếp của Lyn',
+    description: 'Bài viết về lối sống khỏe, thói quen ăn uống và cảm hứng meal prep cho ngày thường.',
+    image: 'assets/images/hero-meal-prep.png'
+  });
   const articles = await data('articles');
   const filters = ['Tất cả', ...new Set(articles.map((a) => a.category))];
   const filterWrap = $('#article-filters');
@@ -376,7 +438,12 @@ async function articlesPage() {
 async function articleDetail() {
   const articles = await data('articles'),
     a = articles.find((x) => x.id == new URLSearchParams(location.search).get('id')) || articles[0];
-  document.title = `${a.title} — Nhà bếp của Lyn`;
+  setSeoMeta({
+    title: a.seoTitle || a.title,
+    description: a.seoDescription || a.excerpt || a.intro,
+    image: a.seoThumbnail || a.seoImage || a.image,
+    url: `${window.location.pathname}?id=${a.id}`
+  });
   const sections = a.sections || [{ heading: 'Gợi ý thực hành', body: a.content, tips: [] }];
   const sectionMarkup = sections
     .map(
@@ -387,6 +454,11 @@ async function articleDetail() {
     `<p class="text-[11px] font-bold uppercase tracking-[.15em] text-[var(--color-fern-500)]">${a.category} · ${a.readTime} · ${a.date}</p><h1 class="font-['Playfair_Display'] text-[clamp(42px,6vw,76px)] leading-[1.12]">${a.title}</h1><p class="text-[19px] text-[#565a52]">${a.excerpt}</p><img class="my-[30px] h-[280px] w-full object-cover md:h-[450px] rounded-md" src="${imageSrc(a.image)}" ${imageFallback} alt="${a.title}"><div class="article-prose"><p class="article-lead">${a.intro || a.content}</p>${sectionMarkup}<aside class="my-9 rounded-2xl border border-[#d5e2d2] bg-[#f1f6ef] p-6"><p class="eyebrow">Ghi nhớ</p><p class="mt-3 text-[17px] font-semibold text-[#3b5e41]">${a.takeaway || 'Bắt đầu bằng một thay đổi vừa sức và lặp lại theo nhịp của bạn.'}</p></aside>${a.video ? `<section class="my-10 overflow-hidden rounded-2xl border border-[#e7e5df] bg-white p-3 shadow-sm"><div class="mb-3 flex items-center gap-2 px-2 pt-1"><span class="flex h-8 w-8 items-center justify-center rounded-full bg-[#e8f0e4] text-sm">▶</span><div><p class="text-sm font-bold">Xem thêm bằng video</p><p class="text-xs text-[#74776f]">Một góc cảm hứng để cùng vào bếp</p></div></div><div class="aspect-video overflow-hidden rounded-xl bg-[#e8dfd0]"><iframe class="h-full w-full" src="${a.video}" title="Video về ${a.title}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div></section>` : ''}<h2>Điều quan trọng là sự đều đặn</h2><p>Hãy bắt đầu bằng lựa chọn vừa sức với lịch sống của bạn. Một bữa ăn được chuẩn bị sẵn, một chai nước trên bàn làm việc hoặc 10 phút đi bộ cũng là những bước nhỏ đáng giá.</p></div>`;
 }
 async function prep() {
+  setSeoMeta({
+    title: 'Meal prep — Nhà bếp của Lyn',
+    description: 'Thực đơn meal prep và danh sách mua sắm để bạn chuẩn bị bữa ăn cả tuần dễ dàng.',
+    image: 'assets/images/hero-meal-prep.png'
+  });
   const plans = await data('meal-plans');
   const picker = $('#plan-picker');
   const previous = $('#plan-previous');

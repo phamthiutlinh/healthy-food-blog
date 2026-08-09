@@ -1,12 +1,12 @@
 import fallbackImage from '../assets/images/recipe-placeholder.svg';
-import healthyBreakfastImage from '../assets/images/articles/hero-meal-prep.png';
+import healthyBreakfastImage from '../assets/images/articles/healthy-breakfast-editorial.png';
 import { registerSW } from 'virtual:pwa-register';
 
 registerSW({ immediate: true });
 
 const $ = (s, p = document) => p.querySelector(s);
 const $$ = (s, p = document) => [...p.querySelectorAll(s)];
-const imageSrc = (src) => src === 'assets/images/articles/hero-meal-prep.png' ? healthyBreakfastImage : src || fallbackImage;
+const imageSrc = (src) => src === 'assets/images/articles/healthy-breakfast-editorial.png' ? healthyBreakfastImage : src || fallbackImage;
 const imageFallback = `onerror="this.onerror=null;this.src='${fallbackImage}'"`;
 const parseArticleDate = (value) => {
   const [day, month, year] = (value || '00.00.0000').split('.').map(Number);
@@ -270,7 +270,7 @@ async function home() {
   setSeoMeta({
     title: 'Nhà bếp của Lyn — Healthy lifestyle',
     description: 'Những công thức healthy, meal prep và góc sống khỏe cho một nhịp ăn uống tự nhiên hơn.',
-    image: 'assets/images/hero-meal-prep.png'
+    image: 'assets/images/healthy-breakfast-editorial.png'
   });
   const [recipes, articles] = await Promise.all([data('recipes'), data('articles')]);
   const featuredContainer = $('#featured');
@@ -294,7 +294,7 @@ async function recipesPage() {
   setSeoMeta({
     title: 'Công thức — Nhà bếp của Lyn',
     description: 'Công thức bữa sáng, bữa trưa, bữa tối và ăn nhẹ giúp bạn nấu nhanh mà vẫn đủ đầy.',
-    image: 'assets/images/hero-meal-prep.png'
+    image: 'assets/images/healthy-breakfast-editorial.png'
   });
   const recipes = await data('recipes');
   const listContainer = $('#recipe-list');
@@ -387,7 +387,7 @@ async function articlesPage() {
   setSeoMeta({
     title: 'Góc sống khỏe — Nhà bếp của Lyn',
     description: 'Bài viết về lối sống khỏe, thói quen ăn uống và cảm hứng meal prep cho ngày thường.',
-    image: 'assets/images/hero-meal-prep.png'
+    image: 'assets/images/healthy-breakfast-editorial.png'
   });
   const articles = await data('articles');
   const filters = ['Tất cả', ...new Set(articles.map((a) => a.category))];
@@ -457,7 +457,7 @@ async function prep() {
   setSeoMeta({
     title: 'Meal prep — Nhà bếp của Lyn',
     description: 'Thực đơn meal prep và danh sách mua sắm để bạn chuẩn bị bữa ăn cả tuần dễ dàng.',
-    image: 'assets/images/hero-meal-prep.png'
+    image: 'assets/images/healthy-breakfast-editorial.png'
   });
   const plans = await data('meal-plans');
   const picker = $('#plan-picker');

@@ -1,0 +1,62 @@
+[
+  {
+    "title": "Thực đơn 7 ngày của Lyn",
+    "description": "Lộ trình cân bằng, nhiều màu sắc để bạn không phải nghĩ hôm nay ăn gì.",
+    "shopping": ["Ức gà 700g", "Cá hồi 400g", "Tôm 300g", "Trứng gà 10 quả", "Đậu hũ 400g", "Yến mạch 500g", "Sữa chua Hy Lạp 5 hũ", "Gạo lứt 500g", "Quinoa 250g", "Khoai lang 1kg", "Bánh mì nguyên cám", "Chuối 6 quả", "Bơ 2 quả", "Rau xà lách", "Cải bó xôi", "Bông cải xanh", "Cà chua", "Cà rốt", "Chanh"],
+    "days": [
+      {"day":"Thứ 2","breakfast":"Yến mạch sữa chua & chuối","lunch":"Salad ức gà, bơ & quinoa","dinner":"Cá hồi áp chảo, bông cải xanh","calories":1650,"protein":"112g"},
+      {"day":"Thứ 3","breakfast":"Toast bơ trứng lòng đào","lunch":"Cơm gạo lứt gà xào rau xanh","dinner":"Đậu hũ sốt cà chua, khoai lang","calories":1700,"protein":"108g"},
+      {"day":"Thứ 4","breakfast":"Smoothie xanh chuối & cải bó xôi","lunch":"Bowl tôm quinoa rau củ","dinner":"Súp bí đỏ cùng salad dưa leo","calories":1600,"protein":"101g"},
+      {"day":"Thứ 5","breakfast":"Pancake yến mạch chuối","lunch":"Wrap ức gà sốt sữa chua","dinner":"Cá hồi nướng chanh cùng rau củ","calories":1680,"protein":"115g"},
+      {"day":"Thứ 6","breakfast":"Trứng cuộn cải bó xôi","lunch":"Salad quinoa đậu hũ áp chảo","dinner":"Miến gà rau củ thanh nhẹ","calories":1630,"protein":"105g"},
+      {"day":"Thứ 7","breakfast":"Khoai lang, trứng luộc & bơ","lunch":"Bún tôm rau củ sốt chanh","dinner":"Gà nướng thảo mộc cùng cà rốt","calories":1720,"protein":"113g"},
+      {"day":"Chủ nhật","breakfast":"Chia pudding sữa chua trái cây","lunch":"Bowl gạo lứt trứng & rau xanh","dinner":"Đậu hũ nướng, salad bơ quinoa","calories":1580,"protein":"98g"}
+    ],
+    "tips": ["Sơ chế rau và nấu sẵn gạo lứt, quinoa vào Chủ nhật.", "Để sốt riêng để rau vẫn giòn khi mang đi.", "Đổi rau theo mùa để thực đơn luôn mới mẻ."]
+  },
+  {
+    "title": "Meal Prep 7 ngày cho người bận rộn",
+    "description": "Mở ra là có thực đơn, đi chợ một lần và ăn ngon cả tuần.",
+    "shopping": ["Ức gà 700g", "Cá hồi 500g", "Thịt bò nạc 300g", "Cá ngừ hộp", "Đậu hũ 400g", "Tôm tươi 300g", "Trứng gà 10 quả", "Yến mạch 500g", "Sữa chua Hy Lạp 5 hũ", "Hạt chia 100g", "Bơ đậu phộng", "Bánh mì nguyên cám", "Tortilla nguyên cám", "Gạo lứt 500g", "Quinoa 300g", "Miến gạo", "Khoai lang 1kg", "Chuối", "Bơ", "Rau xà lách", "Bông cải xanh", "Cà chua", "Dưa leo", "Cà rốt", "Bí đỏ", "Chanh"],
+    "days": [
+      {"day":"Thứ 2","breakfast":"Yến mạch sữa chua Hy Lạp & chuối","lunch":"Salad ức gà, bơ & quinoa","dinner":"Cá hồi áp chảo cùng bông cải xanh","calories":1680,"protein":"118g"},
+      {"day":"Thứ 3","breakfast":"Bánh mì nguyên cám bơ & trứng ốp","lunch":"Cơm gạo lứt gà xào rau xanh","dinner":"Đậu hũ sốt cà chua, khoai lang nướng","calories":1720,"protein":"112g"},
+      {"day":"Thứ 4","breakfast":"Smoothie xanh chuối, cải bó xôi & sữa chua","lunch":"Bò áp chảo với quinoa và rau củ","dinner":"Canh bí đỏ tôm & salad dưa leo","calories":1650,"protein":"109g"},
+      {"day":"Thứ 5","breakfast":"Pancake yến mạch chuối & bơ đậu phộng","lunch":"Bowl cá ngừ, trứng luộc & gạo lứt","dinner":"Ức gà nướng thảo mộc cùng cà rốt","calories":1700,"protein":"121g"},
+      {"day":"Thứ 6","breakfast":"Trứng cuộn rau chân vịt & cà chua","lunch":"Miến gà rau củ thanh nhẹ","dinner":"Cá hồi nướng chanh với khoai lang","calories":1670,"protein":"115g"},
+      {"day":"Thứ 7","breakfast":"Chia pudding sữa chua & trái cây","lunch":"Bún tôm rau củ và sốt chanh","dinner":"Bò xào bông cải cùng cơm gạo lứt","calories":1750,"protein":"116g"},
+      {"day":"Chủ nhật","breakfast":"Khoai lang nướng, trứng luộc & bơ","lunch":"Wrap ức gà rau củ sốt sữa chua","dinner":"Salad quinoa đậu hũ áp chảo","calories":1620,"protein":"105g"}
+    ],
+    "tips": ["Meal prep vào Chủ nhật để tiết kiệm 30–40 phút mỗi ngày.", "Ưu tiên hấp, áp chảo hoặc nướng thay vì chiên ngập dầu.", "Uống 2–2.5L nước mỗi ngày.", "Có thể đổi cá hồi thành cá thu hoặc cá ngừ."]
+  },
+  {
+    "title": "7 ngày chay linh hoạt",
+    "description": "Nhiều rau, đậu và ngũ cốc nguyên hạt; dễ đổi một bữa sang protein động vật khi muốn.",
+    "shopping": ["Đậu hũ 800g", "Đậu gà 2 hộp", "Đậu lăng 300g", "Trứng gà 6 quả", "Sữa chua Hy Lạp", "Yến mạch", "Hạt chia", "Gạo lứt", "Quinoa", "Bún gạo lứt", "Khoai lang", "Bánh tortilla", "Bơ", "Nấm", "Bông cải xanh", "Cải bó xôi", "Bí đỏ", "Ớt chuông", "Cà chua", "Dưa leo", "Chanh", "Tahini hoặc mè rang"],
+    "days": [
+      {"day":"Thứ 2","breakfast":"Overnight oats chia & chuối","lunch":"Bowl quinoa đậu gà rau nướng","dinner":"Đậu hũ teriyaki cùng bông cải","calories":1570,"protein":"82g"},
+      {"day":"Thứ 3","breakfast":"Toast bơ, cà chua & trứng","lunch":"Salad đậu lăng, dưa leo & feta","dinner":"Cà ri bí đỏ đậu gà với cơm lứt","calories":1620,"protein":"79g"},
+      {"day":"Thứ 4","breakfast":"Sữa chua Hy Lạp hạt chia","lunch":"Wrap hummus rau củ nướng","dinner":"Bún gạo lứt đậu hũ sốt chanh","calories":1540,"protein":"76g"},
+      {"day":"Thứ 5","breakfast":"Smoothie xoài cải bó xôi","lunch":"Cơm lứt nấm xào trứng","dinner":"Súp đậu lăng đỏ và salad xanh","calories":1590,"protein":"81g"},
+      {"day":"Thứ 6","breakfast":"Pancake yến mạch bơ đậu phộng","lunch":"Quinoa tabbouleh cùng đậu gà","dinner":"Đậu hũ nướng mè, khoai lang","calories":1650,"protein":"84g"},
+      {"day":"Thứ 7","breakfast":"Khoai lang nướng & sữa chua","lunch":"Bowl falafel rau củ tươi","dinner":"Mì Ý sốt cà chua nấm","calories":1600,"protein":"73g"},
+      {"day":"Chủ nhật","breakfast":"Chia pudding dừa trái cây","lunch":"Salad quinoa, bơ & đậu đen","dinner":"Canh miso đậu hũ, cơm lứt","calories":1520,"protein":"75g"}
+    ],
+    "tips": ["Nấu đậu lăng và quinoa cùng lúc để dùng được nhiều bữa.", "Ngâm đậu hũ với nước tương, chanh và tỏi trước khi nướng.", "Nếu cần tăng đạm, thêm trứng, sữa chua hoặc cá ngừ vào bữa trưa."]
+  },
+  {
+    "title": "7 ngày nhẹ bụng, nhiều rau",
+    "description": "Thực đơn tươi mát, vừa đủ năng lượng cho những tuần muốn ăn đơn giản hơn.",
+    "shopping": ["Ức gà 500g", "Cá trắng 400g", "Tôm 300g", "Trứng gà 8 quả", "Đậu hũ non 400g", "Sữa chua không đường", "Yến mạch", "Gạo lứt", "Khoai lang", "Bún gạo", "Rau xà lách", "Rau rocket", "Cải thìa", "Bông cải", "Bí ngòi", "Cà chua", "Dưa leo", "Cà rốt", "Táo", "Cam", "Chanh", "Gừng"],
+    "days": [
+      {"day":"Thứ 2","breakfast":"Sữa chua táo quế & yến mạch","lunch":"Salad gà nướng rau rocket","dinner":"Cá trắng hấp gừng, cải thìa","calories":1450,"protein":"97g"},
+      {"day":"Thứ 3","breakfast":"Trứng luộc & khoai lang","lunch":"Bún tôm rau củ sốt chanh","dinner":"Canh bí đỏ đậu hũ non","calories":1500,"protein":"93g"},
+      {"day":"Thứ 4","breakfast":"Smoothie cam, cà rốt & sữa chua","lunch":"Bowl gạo lứt gà xé dưa leo","dinner":"Cá nướng giấy bạc cùng bí ngòi","calories":1480,"protein":"101g"},
+      {"day":"Thứ 5","breakfast":"Overnight oats hạt chia","lunch":"Salad trứng, bơ & cà chua","dinner":"Tôm áp chảo tỏi, bông cải","calories":1520,"protein":"96g"},
+      {"day":"Thứ 6","breakfast":"Toast nguyên cám phết bơ","lunch":"Miến gà nấm rau xanh","dinner":"Đậu hũ non sốt nấm","calories":1460,"protein":"89g"},
+      {"day":"Thứ 7","breakfast":"Sữa chua cam & hạt chia","lunch":"Wrap cá nướng rau giòn","dinner":"Súp rau củ gà xé","calories":1490,"protein":"94g"},
+      {"day":"Chủ nhật","breakfast":"Khoai lang nướng, trứng & dưa leo","lunch":"Salad tôm quinoa","dinner":"Cá hấp chanh cùng rau luộc","calories":1440,"protein":"98g"}
+    ],
+    "tips": ["Nêm bằng chanh, gừng, tiêu và thảo mộc để món nhẹ mà vẫn đậm vị.", "Chia sẵn rau rửa sạch vào hộp có khăn giấy để giữ tươi.", "Đừng cắt tinh bột quá mức: một phần gạo lứt hoặc khoai giúp no lâu hơn."]
+  }
+]

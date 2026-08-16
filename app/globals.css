@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-fern-50: #eff5f0;
+  --color-fern-100: #e0ebe2;
+  --color-fern-200: #c0d8c4;
+  --color-fern-300: #a1c4a7;
+  --color-fern-400: #82b089;
+  --color-fern-500: #629d6c;
+  --color-fern-600: #4f7d56;
+  --color-fern-700: #3b5e41;
+  --color-fern-800: #273f2b;
+  --color-fern-900: #141f16;
+  --color-fern-950: #0e160f;
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl overflow-hidden bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md;
+  }
+  .chip {
+    @apply inline-block rounded-full bg-[#e8f0e4] px-3 py-1 text-[12px] font-semibold text-[#4f7d56];
+  }
+  .eyebrow {
+    @apply text-[11px] font-bold uppercase tracking-[.15em] text-[#78966c];
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-full bg-[#5d874f] px-[24px] py-[14px] text-[15px] font-semibold text-white shadow-[0_7px_15px_rgba(64,101,54,.18)] transition hover:-translate-y-px hover:bg-[#4c7541];
+  }
+  .text-highlight {
+    @apply bg-gradient-to-r from-[#638957] to-[#78966c] bg-[length:100%_40%] bg-no-repeat pb-0.5;
+  }
+  .section-accent {
+    @apply border-l-4 border-[#78966c] pl-4;
+  }
+}

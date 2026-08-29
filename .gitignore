@@ -7,5 +7,6 @@ dev-dist/
 dist/
 .vercel
 .env*
+!.env.example
 public/swe-*
 public/workbox-*

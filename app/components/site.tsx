@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { ArrowUp } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import type { Article, Recipe } from '../../lib/content';
+import { ChatWidget } from './chatbot';
 import { ContentCard, SectionHeader } from './ui';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
@@ -19,6 +20,8 @@ const nav = [
   ['Góc sống khỏe', '/articles'],
   ['Về chúng mình', '/about'],
 ];
+
+const chatWidgetEnabled = false; // Set to true to enable the chat widget on all pages. Can be toggled per page if needed.
 
 export function Header({ active }: { active?: string }) {
   const [open, setOpen] = useState(false);
@@ -170,6 +173,7 @@ export function Shell({
       {children}
       <Footer />
       <ScrollToTop />
+      {chatWidgetEnabled && <ChatWidget />}
     </div>
   );
 }

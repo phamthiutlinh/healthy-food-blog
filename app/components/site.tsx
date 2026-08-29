@@ -383,8 +383,10 @@ export function HomePage({ recipes, articles }: { recipes: Recipe[]; articles: A
             </div>
             <img
               className="order-first h-[260px] w-full object-cover md:order-none md:h-full"
-              src="https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=1000&q=80"
+              src="https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=800&q=70"
               alt="Rau củ meal prep"
+              loading="lazy"
+              decoding="async"
             />
           </div>
         </div>
@@ -584,8 +586,10 @@ export function AboutPage() {
         <section className="mx-auto grid max-w-[1180px] items-center gap-[70px] px-[18px] md:grid-cols-2 md:px-[26px]">
           <img
             className="h-[480px] w-full rounded-2xl object-cover"
-            src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1000&q=80"
+            src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=800&q=70"
             alt="Bàn ăn đầy rau củ"
+            loading="lazy"
+            decoding="async"
           />
           <div>
             <p className="eyebrow">📜 Câu chuyện của chúng mình</p>

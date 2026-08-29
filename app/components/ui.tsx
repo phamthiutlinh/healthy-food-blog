@@ -21,6 +21,7 @@ export function ContentCard({ href, image, title, category, description, meta }:
             src={image}
             alt={title}
             loading="lazy"
+            decoding="async"
             onError={(event) => {
               event.currentTarget.onerror = null;
               event.currentTarget.src = fallbackImage;

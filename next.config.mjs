@@ -1,7 +1,14 @@
 import withPWAInit from '@ducanh2912/next-pwa';
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  images: {
+    // We only ever render plain <img> tags (no next/image), so this is just
+    // a safeguard: it guarantees no request can trigger Next's on-demand
+    // sharp-based resizing, which is CPU-heavy and would load the server.
+    unoptimized: true,
+  },
+};
 
 const withPWA = withPWAInit({
   dest: 'public',

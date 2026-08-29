@@ -48,6 +48,9 @@ export function DetailPage({ item, type }: { item: Recipe | Article; type: 'reci
             className="my-[30px] h-[280px] w-full rounded-md object-cover md:h-[450px]"
             src={img(item.image)}
             alt={item.title}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
             onError={(event) => {
               event.currentTarget.onerror = null;
               event.currentTarget.src = '/assets/images/recipe-placeholder.svg';

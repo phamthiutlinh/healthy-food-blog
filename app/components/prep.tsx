@@ -150,6 +150,7 @@ export function PrepPage({ plans }: { plans: MealPlan[] }) {
             className="h-[480px] w-full rounded-2xl object-cover"
             src="/assets/images/hero-meal-prep.png"
             alt="Meal prep healthy"
+            decoding="async"
           />
           <div>
             <p className="eyebrow">🛒 Danh sách mua sắm</p>

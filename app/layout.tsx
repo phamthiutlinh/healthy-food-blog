@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import '../public/css/style.css';
+import Script from 'next/script';
 
 export const viewport: Viewport = {
   themeColor: '#78966C',
@@ -55,14 +56,22 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
           rel="stylesheet"
         />
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-BMB6Z09GFZ"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-BMB6Z09GFZ');
-        </script>
+        <Script
+    src="https://www.googletagmanager.com/gtag/js?id=G-BMB6Z09GFZ"
+    strategy="afterInteractive"
+    type="text/javascript"
+  />
+  <script
+    async
+    dangerouslySetInnerHTML={{
+      __html: `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-BMB6Z09GFZ');
+      `,
+    }}
+  />
       </head>
       <body>{children}</body>
     </html>

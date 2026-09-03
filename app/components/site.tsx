@@ -21,7 +21,7 @@ const nav = [
   ['Về chúng mình', '/about'],
 ];
 
-const chatWidgetEnabled = false; // Set to true to enable the chat widget on all pages. Can be toggled per page if needed.
+const chatWidgetEnabled = true; // Set to true to enable the chat widget on all pages. Can be toggled per page if needed.
 
 export function Header({ active }: { active?: string }) {
   const [open, setOpen] = useState(false);

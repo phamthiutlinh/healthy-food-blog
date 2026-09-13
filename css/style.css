@@ -150,8 +150,9 @@ body {
   overflow: hidden;
   border: 1px solid rgba(231, 229, 223, 0.7);
   box-shadow: 0 2px 8px rgba(47, 52, 45, 0.06);
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
-              box-shadow 0.25s ease;
+  transition:
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.25s ease;
 }
 .card:hover {
   transform: translateY(-6px);
@@ -183,18 +184,26 @@ body {
 }
 
 .plan-card {
-  transition: transform 0.25s ease, border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
 }
 .plan-card:hover,
 .plan-card:focus-visible {
   transform: translateY(-4px);
   border-color: var(--color-fern-500);
-  box-shadow: 0 12px 28px rgba(47, 52, 45, 0.12), 0 4px 10px rgba(47, 52, 45, 0.06);
+  box-shadow:
+    0 12px 28px rgba(47, 52, 45, 0.12),
+    0 4px 10px rgba(47, 52, 45, 0.06);
 }
 .plan-card--selected {
   border-color: var(--color-fern-500);
   background-color: #f1f4ed;
-  box-shadow: 0 12px 28px rgba(47, 52, 45, 0.12), 0 4px 10px rgba(47, 52, 45, 0.06);
+  box-shadow:
+    0 12px 28px rgba(47, 52, 45, 0.12),
+    0 4px 10px rgba(47, 52, 45, 0.06);
 }
 .plan-card--selected:hover,
 .plan-card--selected:focus-visible {
@@ -237,7 +246,7 @@ nav a {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-fern-600);
-  background: linear-gradient(135deg, rgba(120,150,108,0.12) 0%, rgba(48,207,172,0.08) 100%);
+  background: linear-gradient(135deg, rgba(120, 150, 108, 0.12) 0%, rgba(48, 207, 172, 0.08) 100%);
   padding: 4px 12px;
   border-radius: 999px;
   border: 1px solid rgba(120, 150, 108, 0.25);
@@ -247,11 +256,7 @@ nav a {
    Highlight text – gradient underline decoration
 ───────────────────────────────────────────── */
 .text-highlight {
-  background: linear-gradient(
-    to bottom,
-    transparent 55%,
-    rgba(120, 150, 108, 0.28) 55%
-  );
+  background: linear-gradient(to bottom, transparent 55%, rgba(120, 150, 108, 0.28) 55%);
   padding-bottom: 2px;
 }
 
@@ -283,15 +288,17 @@ header.scrolled {
 /* ─────────────────────────────────────────────
    Form input – focus ring
 ───────────────────────────────────────────── */
-input[type="text"],
-input[type="email"],
-input[type="search"],
+input[type='text'],
+input[type='email'],
+input[type='search'],
 select {
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="search"]:focus,
+input[type='text']:focus,
+input[type='email']:focus,
+input[type='search']:focus,
 select:focus {
   outline: none;
   border-color: var(--color-fern-400);
@@ -321,7 +328,7 @@ button.btn-primary::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
   opacity: 0;
   transition: opacity 0.25s ease;
   border-radius: inherit;
@@ -374,17 +381,29 @@ button.btn-primary:hover::before {
    Hero section – subtle animated gradient overlay
 ───────────────────────────────────────────── */
 @keyframes heroShimmer {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* ─────────────────────────────────────────────
    Smooth page fade-in
 ───────────────────────────────────────────── */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(18px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 main {
   animation: fadeUp 0.5s ease both;
@@ -401,10 +420,34 @@ main {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-fern-600);
-  background: rgba(120, 150, 108, 0.10);
+  background: rgba(120, 150, 108, 0.1);
   padding: 3px 10px;
   border-radius: 999px;
   border: 1px solid rgba(120, 150, 108, 0.2);
+}
+
+/* ─────────────────────────────────────────────
+   Parallax + scroll reveal (home page)
+   GPU-friendly: transform/opacity only.
+   Disabled automatically when prefers-reduced-motion.
+───────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(var(--reveal-y, 24px));
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 /* ─────────────────────────────────────────────
@@ -413,38 +456,38 @@ main {
 ───────────────────────────────────────────── */
 @media (min-width: 1080px) {
   /* Hero section – percentage-based height for large screens */
-  body[data-page="home"] section:first-of-type > div {
+  body[data-page='home'] section:first-of-type > div {
     aspect-ratio: auto;
     min-height: 80vh;
     max-height: none;
   }
 
-  body[data-page="home"] section:first-of-type > div h1 {
+  body[data-page='home'] section:first-of-type > div h1 {
     font-size: clamp(54px, 5.5vw, 84px) !important;
   }
 
-  body[data-page="home"] section:first-of-type > div > div {
+  body[data-page='home'] section:first-of-type > div > div {
     max-width: 680px;
   }
 
   /* Hero paragraph text */
-  body[data-page="home"] section:first-of-type > div p[class*="text-[15px]"] {
+  body[data-page='home'] section:first-of-type > div p[class*='text-[15px]'] {
     font-size: 18px;
   }
 
   /* Hero buttons */
-  body[data-page="home"] section:first-of-type a.btn-primary {
+  body[data-page='home'] section:first-of-type a.btn-primary {
     font-size: 16px;
     padding: 16px 30px;
   }
 
   /* Adjust container max-width for better use of 1080p screen */
-  body[data-page="home"] .mx-auto.max-w-\[1180px\] {
+  body[data-page='home'] .mx-auto.max-w-\[1180px\] {
     max-width: 1100px;
   }
 
   /* Section headings on 1080p */
-  body[data-page="home"] h2[class*="font-\['Playfair_Display'\]"] {
+  body[data-page='home'] h2[class*="font-\['Playfair_Display'\]"] {
     font-size: clamp(36px, 4.2vw, 56px);
   }
 }

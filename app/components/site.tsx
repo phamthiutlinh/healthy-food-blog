@@ -5,6 +5,7 @@ import { ArrowUp } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import type { Article, Recipe } from '../../lib/content';
 import { ChatWidget } from './chatbot';
+import { Parallax, Reveal, useHeroParallax } from './parallax';
 import { ContentCard, SectionHeader } from './ui';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
@@ -99,9 +100,7 @@ export function Header({ active }: { active?: string }) {
                 onClick={() => setOpen(false)}
               >
                 <span>{label}</span>
-                {isActive && (
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#547748] md:hidden" />
-                )}
+                {isActive && <span className="h-1.5 w-1.5 rounded-full bg-[#547748] md:hidden" />}
               </Link>
             );
           })}
@@ -292,19 +291,26 @@ export function HomePage({ recipes, articles }: { recipes: Recipe[]; articles: A
       b.date.split('.').reverse().join('').localeCompare(a.date.split('.').reverse().join(''))
     )
     .slice(0, 6);
+  const { bgRef, contentRef } = useHeroParallax<HTMLDivElement>();
   return (
     <Shell page="home" active="/">
       <section className="pt-0 pb-3 md:pb-10">
         <div className="relative flex min-h-[520px] items-end overflow-hidden px-[20px] pb-[28px] pt-[160px] isolate before:absolute before:inset-0 before:-z-10 before:bg-gradient-to-b before:from-[#f2f0df]/85 before:via-[#f5f2e6]/92 before:to-[#f5f2e6]/96 md:aspect-[1.83] md:min-h-0 md:items-center md:px-[96px] md:py-[72px] md:before:bg-gradient-to-r md:before:from-[#f2f0df]/96 md:before:via-[#f5f2e6]/68 md:before:to-[#f5f2e6]/0">
-          <video
-            className="absolute inset-0 -z-20 h-full w-full object-cover"
-            src="/assets/videos/banner.mp4"
-            autoPlay
-            muted
-            loop
-            playsInline
-          />
-          <div className="max-w-[630px]">
+          <div
+            ref={bgRef}
+            className="absolute inset-0 -z-20 will-change-transform"
+            style={{ transform: 'translate3d(0,0,0) scale(1.15)' }}
+          >
+            <video
+              className="h-[115%] w-full object-cover"
+              src="/assets/videos/banner.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+            />
+          </div>
+          <div ref={contentRef} className="max-w-[630px] will-change-transform">
             <p className="eyebrow">🌿 &nbsp;Ăn ngon · sống cân bằng</p>
             <h1 className="mt-4 font-['Playfair_Display'] text-[clamp(40px,9vw,64px)] leading-[1.02] md:text-[clamp(48px,5.2vw,84px)]">
               Ăn lành,
@@ -344,67 +350,83 @@ export function HomePage({ recipes, articles }: { recipes: Recipe[]; articles: A
           </div>
         </div>
       </section>
-      <ListingSection
-        eyebrow="🍳 Bắt đầu từ căn bếp"
-        title={
+      <Reveal>
+        <ListingSection
+          eyebrow="🍳 Bắt đầu từ căn bếp"
+          title={
+            <>
+              Món ngon, <span className="text-highlight">không cầu kỳ</span>
+            </>
+          }
+          href="/recipes"
+        >
           <>
-            Món ngon, <span className="text-highlight">không cầu kỳ</span>
+            {recipes
+              .filter((r) => r.featured)
+              .slice(0, 3)
+              .map((r, i) => (
+                <Reveal key={r.id} delay={i * 90}>
+                  <RecipeCard recipe={r} />
+                </Reveal>
+              ))}
           </>
-        }
-        href="/recipes"
-      >
-        <>
-          {recipes
-            .filter((r) => r.featured)
-            .slice(0, 3)
-            .map((r) => (
-              <RecipeCard key={r.id} recipe={r} />
-            ))}
-        </>
-      </ListingSection>
+        </ListingSection>
+      </Reveal>
       <section className="bg-[#e8dfd0] py-[52px] md:py-[76px]">
         <div className="mx-auto max-w-[1180px] px-[18px] md:px-[26px]">
-          <div className="grid overflow-hidden rounded-2xl bg-white shadow-[0_8px_32px_rgba(47,52,45,0.10)] md:grid-cols-[1fr_1.1fr]">
-            <div className="p-[38px] md:p-[60px]">
-              <p className="eyebrow">📅 Gợi ý trong tuần</p>
-              <h2 className="mt-3 font-['Playfair_Display'] text-[clamp(30px,4vw,48px)]">
-                Chuẩn bị trước, <span className="text-highlight">thảnh thơi hơn.</span>
-              </h2>
-              <p className="mt-4">
-                Thực đơn 5 ngày với nguyên liệu quen thuộc và cách phối linh hoạt. Dành ít thời gian
-                hơn trong bếp, nhiều thời gian hơn cho bạn.
-              </p>
-              <Link
-                className="btn-primary mt-2 inline-flex rounded-full bg-[#78966c] px-[21px] py-[13px] font-semibold text-white"
-                href="/meal-prep"
-              >
-                Xem thực đơn →
-              </Link>
+          <Reveal>
+            <div className="grid overflow-hidden rounded-2xl bg-white shadow-[0_8px_32px_rgba(47,52,45,0.10)] md:grid-cols-[1fr_1.1fr]">
+              <div className="p-[38px] md:p-[60px]">
+                <p className="eyebrow">📅 Gợi ý trong tuần</p>
+                <h2 className="mt-3 font-['Playfair_Display'] text-[clamp(30px,4vw,48px)]">
+                  Chuẩn bị trước, <span className="text-highlight">thảnh thơi hơn.</span>
+                </h2>
+                <p className="mt-4">
+                  Thực đơn 5 ngày với nguyên liệu quen thuộc và cách phối linh hoạt. Dành ít thời
+                  gian hơn trong bếp, nhiều thời gian hơn cho bạn.
+                </p>
+                <Link
+                  className="btn-primary mt-2 inline-flex rounded-full bg-[#78966c] px-[21px] py-[13px] font-semibold text-white"
+                  href="/meal-prep"
+                >
+                  Xem thực đơn →
+                </Link>
+              </div>
+              <div className="relative order-first h-[260px] overflow-hidden md:order-none md:h-auto md:min-h-[380px]">
+                <Parallax speed={0.12} className="absolute inset-0">
+                  <img
+                    className="h-[120%] w-full object-cover"
+                    src="https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=800&q=70"
+                    alt="Rau củ meal prep"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </Parallax>
+              </div>
             </div>
-            <img
-              className="order-first h-[260px] w-full object-cover md:order-none md:h-full"
-              src="https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=800&q=70"
-              alt="Rau củ meal prep"
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
+          </Reveal>
         </div>
       </section>
-      <ListingSection
-        eyebrow="📝 Góc sống khỏe"
-        title={
-          <>
-            Đọc chậm <span className="text-highlight">một chút</span>
-          </>
-        }
-        href="/articles"
-      >
-        {latest.slice(0, 6).map((a) => (
-          <ArticleCard key={a.id} article={a} />
-        ))}
-      </ListingSection>
-      <NewsletterSection />
+      <Reveal>
+        <ListingSection
+          eyebrow="📝 Góc sống khỏe"
+          title={
+            <>
+              Đọc chậm <span className="text-highlight">một chút</span>
+            </>
+          }
+          href="/articles"
+        >
+          {latest.slice(0, 6).map((a, i) => (
+            <Reveal key={a.id} delay={(i % 3) * 90}>
+              <ArticleCard article={a} />
+            </Reveal>
+          ))}
+        </ListingSection>
+      </Reveal>
+      <Reveal>
+        <NewsletterSection />
+      </Reveal>
     </Shell>
   );
 }

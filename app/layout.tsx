@@ -11,7 +11,8 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://healthy-food-blog.vercel.app'),
   title: 'Nhà bếp của Lyn — Ăn ngon, sống khỏe',
-  description: 'Những công thức healthy, meal prep và góc sống khỏe cho một nhịp ăn uống tự nhiên hơn.',
+  description:
+    'Những công thức healthy, meal prep và góc sống khỏe cho một nhịp ăn uống tự nhiên hơn.',
   applicationName: 'Healthy Blog',
   manifest: '/manifest.webmanifest',
   appleWebApp: {
@@ -27,7 +28,8 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'vi_VN',
     title: 'Nhà bếp của Lyn — Ăn ngon, sống khỏe',
-    description: 'Những công thức healthy, meal prep và góc sống khỏe cho một nhịp ăn uống tự nhiên hơn.',
+    description:
+      'Những công thức healthy, meal prep và góc sống khỏe cho một nhịp ăn uống tự nhiên hơn.',
     siteName: 'Nhà bếp của Lyn',
     images: [
       {
@@ -41,7 +43,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Nhà bếp của Lyn — Ăn ngon, sống khỏe',
-    description: 'Những công thức healthy, meal prep và góc sống khỏe cho một nhịp ăn uống tự nhiên hơn.',
+    description:
+      'Những công thức healthy, meal prep và góc sống khỏe cho một nhịp ăn uống tự nhiên hơn.',
     images: ['/assets/images/articles/healthy-breakfast-editorial.jpeg'],
   },
 };
@@ -57,21 +60,24 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           rel="stylesheet"
         />
         <Script
-    src="https://www.googletagmanager.com/gtag/js?id=G-BMB6Z09GFZ"
-    strategy="afterInteractive"
-    type="text/javascript"
-  />
-  <script
-    async
-    dangerouslySetInnerHTML={{
-      __html: `
+          src="https://www.googletagmanager.com/gtag/js?id=G-BMB6Z09GFZ"
+          strategy="afterInteractive"
+          type="text/javascript"
+        />
+        <script
+          async
+          dangerouslySetInnerHTML={{
+            __html: `
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'G-BMB6Z09GFZ');
       `,
-    }}
-  />
+          }}
+        />
+        <noscript>
+          <style>{`.reveal,.recipe-card,.mealprep-copy,.mealprep-image,.hero-copy>*{opacity:1!important;transform:none!important;animation:none!important;}.hgallery{height:auto;}.hgallery-sticky{position:static;height:auto;}`}</style>
+        </noscript>
       </head>
       <body>{children}</body>
     </html>

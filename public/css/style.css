@@ -414,23 +414,45 @@ main {
 }
 
 /* ─────────────────────────────────────────────
-   Parallax + scroll reveal (home page)
-   GPU-friendly: transform/opacity only.
-   Disabled automatically when prefers-reduced-motion.
+   Homepage motion system — 5 calm editorial animations
+   1. Fade + vertical reveal (default for text)
+   2. Horizontal 3D card reveal (recipe cards)
+   3. Image parallax (hero / banner / article thumbs)
+   4. Horizontal scroll gallery (articles)
+   5. Exit animation when leaving the viewport
+   GPU-friendly: transform/opacity only. Perspective 800–1200px.
 ───────────────────────────────────────────── */
+
+/* 0. Header — fade down (very low intensity) */
+@keyframes headerDrop {
+  from {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+header {
+  animation: headerDrop 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* 1. Fade + vertical reveal — default for labels, headings, paragraphs, buttons */
 .reveal {
   opacity: 0;
-  transform: translateY(var(--reveal-y, 24px));
+  transform: translateY(var(--reveal-y, 32px));
   transition:
-    opacity 0.8s ease,
-    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 /* 3D entrance variants (hidden state) — used by sections below the hero */
 .reveal-up {
-  transform: translateY(var(--reveal-y, 28px));
+  transform: translateY(var(--reveal-y, 32px));
 }
 .reveal-zoom {
-  transform: scale(0.92) translateY(16px);
+  transform: scale(0.94) translateY(14px);
+  transform-origin: center;
 }
 .reveal-flip {
   transform: perspective(900px) rotateX(12deg) translateY(20px);
@@ -441,34 +463,277 @@ main {
   transform-origin: center bottom;
 }
 .reveal-left {
-  transform: translateX(-48px) perspective(800px) rotateY(8deg);
+  transform: translateX(-70px) perspective(1000px) rotateY(5deg);
 }
 .reveal-right {
-  transform: translateX(48px) perspective(800px) rotateY(-8deg);
+  transform: translateX(70px) perspective(1000px) rotateY(-5deg);
 }
 .reveal.is-visible {
   opacity: 1;
   transform: perspective(900px) rotateX(0) rotateY(0) translate(0, 0) scale(1);
 }
-@media (prefers-reduced-motion: reduce) {
-  .reveal {
+/* 5. Subtle exit — content drifts out instead of vanishing */
+.reveal.is-exiting-up {
+  opacity: 0;
+  transform: translateY(-24px) scale(0.98);
+}
+.reveal.is-exiting-down {
+  opacity: 0;
+  transform: translateY(24px) scale(0.98);
+}
+.reveal-left.is-exiting-up,
+.reveal-right.is-exiting-up {
+  opacity: 0;
+  transform: translateX(-60px) perspective(1000px) rotateY(-6deg) scale(0.96);
+}
+.reveal-left.is-exiting-down,
+.reveal-right.is-exiting-down {
+  opacity: 0;
+  transform: translateX(60px) perspective(1000px) rotateY(6deg) scale(0.96);
+}
+
+/* 1b. Hero entrance — staggered label → heading → description → buttons */
+@keyframes heroEnter {
+  to {
     opacity: 1;
-    transform: none;
+    transform: translateY(0);
+  }
+}
+.hero-copy > * {
+  opacity: 0;
+  transform: translateY(24px);
+  animation: heroEnter 900ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.hero-copy > :nth-child(1) {
+  animation-delay: 100ms;
+}
+.hero-copy > :nth-child(2) {
+  animation-delay: 200ms;
+}
+.hero-copy > :nth-child(3) {
+  animation-delay: 300ms;
+}
+.hero-copy > :nth-child(4) {
+  animation-delay: 400ms;
+}
+.hero-copy > :nth-child(5) {
+  animation-delay: 500ms;
+}
+
+/* 2. Horizontal 3D card reveal — recipe cards (left / center / right) */
+.recipe-card {
+  opacity: 0;
+  transform: translate3d(var(--x, 0px), 40px, -100px) rotateY(var(--rotate, 0deg)) scale(0.94);
+  transform-style: preserve-3d;
+  transition:
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1000ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.recipe-card.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) rotateY(0deg) scale(1);
+}
+.recipe-card.is-exiting-left {
+  opacity: 0;
+  transform: translateX(-100px) perspective(1000px) rotateY(-8deg) scale(0.95);
+}
+.recipe-card.is-exiting-right {
+  opacity: 0;
+  transform: translateX(100px) perspective(1000px) rotateY(8deg) scale(0.95);
+}
+/* Stagger: max ~240ms so the UI never feels slow */
+.recipe-stagger > :nth-child(1) .recipe-card,
+.recipe-stagger > :nth-child(1) {
+  transition-delay: 0ms;
+}
+.recipe-stagger > :nth-child(2) .recipe-card,
+.recipe-stagger > :nth-child(2) {
+  transition-delay: 120ms;
+}
+.recipe-stagger > :nth-child(3) .recipe-card,
+.recipe-stagger > :nth-child(3) {
+  transition-delay: 240ms;
+}
+
+/* Split 3D reveal — meal-prep banner (text left, image right) */
+.mealprep {
+  perspective: 1200px;
+}
+.mealprep-copy,
+.mealprep-image {
+  opacity: 0;
+  transition:
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1100ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.mealprep-copy {
+  transform: translateX(-70px) perspective(1000px) rotateY(5deg);
+}
+.mealprep-image {
+  transform: translateX(70px) perspective(1000px) rotateY(-5deg);
+}
+.mealprep.is-visible .mealprep-copy,
+.mealprep.is-visible .mealprep-image {
+  opacity: 1;
+  transform: translateX(0) rotateY(0);
+}
+
+/* 3. Image parallax */
+.parallax-image {
+  transform: scale(1.08) translateY(var(--parallax-y, 0px));
+  will-change: transform;
+}
+
+/* 4. Horizontal article gallery — calm snap carousel (no pin, no tall spacer) */
+.hgallery {
+  height: auto;
+}
+.hgallery-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 26px 12px;
+}
+.hgallery-btn {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid #d9ddd4;
+  background: #fff;
+  color: #2f342d;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+.hgallery-btn:hover {
+  border-color: #78966c;
+  transform: translateY(-1px);
+}
+.hgallery-track {
+  display: flex;
+  gap: 22px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 4px max(18px, calc((100vw - 1180px) / 2 + 26px)) 16px;
+  scrollbar-width: none;
+}
+.hgallery-track::-webkit-scrollbar {
+  display: none;
+}
+.hgallery-track > * {
+  flex: 0 0 min(340px, 78vw);
+  scroll-snap-align: start;
+}
+
+/* Newsletter — scale + fade from center */
+.newsletter-reveal {
+  transform-origin: center;
+}
+
+/* Footer — fade upward */
+.footer-reveal {
+  --reveal-y: 28px;
+}
+
+/* 3D hover tilt for cards below the hero.
+   Tilt owns the wrapper transform via JS (transition toggled in JS:
+   none while pointing, eased return on leave). The inner .card must NOT
+   translate on hover or the two transforms fight and flicker. */
+.tilt {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+.tilt .card {
+  backface-visibility: hidden;
+}
+.tilt .card:hover {
+  transform: none;
+}
+
+/* Sections with horizontal reveal must not create page-level x-scroll */
+.overflow-guard {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .recipe-card,
+  .mealprep-copy,
+  .mealprep-image {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .hero-copy > * {
+    opacity: 1 !important;
+    transform: none !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  header {
+    animation: none;
+  }
+  .hgallery-track {
+    transform: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .tilt {
     transition: none;
   }
 }
 
-/* 3D hover tilt for cards below the hero */
-.tilt {
-  transition: transform 0.25s ease-out;
-  transform-style: preserve-3d;
-}
-.tilt:hover {
-  transition: transform 0.1s ease-out;
-}
-@media (prefers-reduced-motion: reduce) {
-  .tilt {
-    transition: none;
+/* Mobile — reduce horizontal 3D movement */
+@media (max-width: 768px) {
+  .recipe-card {
+    transform: translateY(24px) scale(0.98);
+  }
+  .recipe-card.is-visible,
+  .recipe-card.is-exiting-left,
+  .recipe-card.is-exiting-right {
+    transform: translateY(0) scale(1);
+  }
+  .recipe-card.is-exiting-left,
+  .recipe-card.is-exiting-right {
+    opacity: 0;
+  }
+  .mealprep-copy,
+  .mealprep-image {
+    transform: translateY(24px);
+  }
+  .mealprep.is-visible .mealprep-copy,
+  .mealprep.is-visible .mealprep-image {
+    transform: translateY(0);
+  }
+  .reveal-left,
+  .reveal-right {
+    transform: translateY(24px);
+  }
+  .reveal.is-visible {
+    transform: translateY(0);
+  }
+  /* Gallery stays a native snap row on mobile */
+  .hgallery-controls {
+    display: none;
+  }
+  .hgallery-track {
+    transform: none !important;
   }
 }
 

@@ -35,7 +35,6 @@ export function Parallax({
     const update = () => {
       ticking = false;
       const rect = el.getBoundingClientRect();
-      // Distance of element center from viewport center
       const offset = rect.top + rect.height / 2 - window.innerHeight / 2;
       el.style.transform = `translate3d(0, ${(-offset * speed).toFixed(1)}px, 0)`;
     };
@@ -66,9 +65,9 @@ export function Parallax({
 
 /**
  * Reveal — fade/slide in once when scrolled into view.
+ * Supports exit animations when leaving viewport.
  * variant "up" = flat fade-up (default).
- * 3D variants: "zoom" (scale), "flip" (rotateX from top),
- * "flip-up" (rotateX from bottom), "left"/"right" (slide + rotateY).
+ * 3D variants: "zoom", "flip", "flip-up", "left", "right".
  */
 export type RevealVariant = 'up' | 'zoom' | 'flip' | 'flip-up' | 'left' | 'right';
 
@@ -78,12 +77,14 @@ export function Reveal({
   y = 24,
   variant = 'up',
   className = '',
+  onExit,
 }: {
   children: ReactNode;
   delay?: number;
   y?: number;
   variant?: RevealVariant;
   className?: string;
+  onExit?: (direction: 'up' | 'down') => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -99,15 +100,26 @@ export function Reveal({
         for (const entry of entries) {
           if (entry.isIntersecting) {
             entry.target.classList.add('is-visible');
-            io.unobserve(entry.target);
+            entry.target.classList.remove('is-exiting-up', 'is-exiting-down', 'is-exiting-left', 'is-exiting-right');
+          } else {
+            entry.target.classList.remove('is-visible');
+            // Determine exit direction based on bounding rect
+            const rect = entry.boundingClientRect;
+            if (rect.top < 0) {
+              entry.target.classList.add('is-exiting-up');
+              onExit?.('up');
+            } else {
+              entry.target.classList.add('is-exiting-down');
+              onExit?.('down');
+            }
           }
         }
       },
-      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
     );
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+  }, [onExit]);
 
   return (
     <div
@@ -221,17 +233,13 @@ export function Scrub3D({
       const rect = el.getBoundingClientRect();
       const vh = window.innerHeight || 1;
       const vw = window.innerWidth || 1;
-      // Vertical journey: >1 below viewport, 0 centered, <-1 above.
-      // Asymmetric curve: dramatic rise-from-bottom entrance, calm exit on top
-      // so scrolling reads as "items appear / move from bottom to up".
       const c = Math.max(-1.25, Math.min(1.25, (rect.top + rect.height / 2 - vh / 2) / (vh / 2)));
-      const entering = Math.min(Math.max(c, 0), 1); // 1 = far below → 0 = centered
-      const leaving = Math.min(Math.max(-c, 0), 1); // 0 = centered → 1 = far above
+      const entering = Math.min(Math.max(c, 0), 1);
+      const leaving = Math.min(Math.max(-c, 0), 1);
       const rx = rotate ? (-entering * 16 - leaving * 5) * intensity : 0;
       const ty = (entering * 110 + leaving * -18) * intensity;
       const s = 1 - (entering * 0.08 + leaving * 0.02) * intensity;
       const opacity = 1 - entering * 0.25 * intensity;
-      // Horizontal depth: outer columns lean slightly toward center
       const ry = rotate ? ((rect.left + rect.width / 2 - vw / 2) / (vw / 2)) * -4 * intensity : 0;
       el.style.transform = `perspective(1000px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) translate3d(0, ${ty.toFixed(1)}px, 0) scale(${s.toFixed(3)})`;
       el.style.opacity = `${Math.max(0, opacity).toFixed(2)}`;
@@ -262,6 +270,77 @@ export function Scrub3D({
 }
 
 /**
+ * HorizontalScroll — horizontal scroll gallery driven by vertical scroll.
+ * Pins the section and translates children horizontally.
+ * On desktop: section becomes sticky, cards move horizontally during scroll.
+ * On mobile: renders as normal grid (handled by CSS).
+ */
+export function HorizontalScroll({
+  children,
+  className = '',
+  speed = 0.5,
+}: {
+  children: ReactNode;
+  className?: string;
+  speed?: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const track = ref.current;
+    const section = sectionRef.current;
+    if (!track || !section || prefersReducedMotion()) return;
+
+    // Only run on desktop
+    if (window.innerWidth < 1024) return;
+
+    let raf = 0;
+    let ticking = false;
+
+    const update = () => {
+      ticking = false;
+      const rect = section.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // Section pins when top reaches viewport top, unpins when bottom leaves
+      const pinStart = 0;
+      const pinEnd = rect.height - vh;
+      const progress = Math.max(0, Math.min(1, (pinStart - rect.top) / pinEnd));
+      const maxScroll = track.scrollWidth - track.clientWidth;
+      track.style.transform = `translateX(${-progress * maxScroll * speed}px)`;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        raf = requestAnimationFrame(update);
+      }
+    };
+
+    // Add pinned class for CSS sticky positioning
+    section.classList.add('pinned');
+
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      section.classList.remove('pinned');
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, [speed]);
+
+  return (
+    <div ref={sectionRef} className={`horizontal-scroll-section ${className}`}>
+      <div ref={ref} className="horizontal-scroll-track">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+/**
  * HeroParallax — to be placed inside the hero container.
  * Give it refs to background + content to get classic hero parallax:
  * background drifts slower, content floats up + fades.
@@ -280,7 +359,6 @@ export function useHeroParallax<T extends HTMLElement>() {
     const update = () => {
       ticking = false;
       const y = window.scrollY;
-      // Only animate while hero is on screen (avoid wasted work)
       if (y > window.innerHeight * 1.2) return;
       if (bg) bg.style.transform = `translate3d(0, ${(y * 0.28).toFixed(1)}px, 0) scale(1.15)`;
       if (content) {

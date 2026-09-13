@@ -585,55 +585,7 @@ header {
   will-change: transform;
 }
 
-/* 4. Horizontal article gallery — calm snap carousel (no pin, no tall spacer) */
-.hgallery {
-  height: auto;
-}
-.hgallery-controls {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 0 26px 12px;
-}
-.hgallery-btn {
-  width: 40px;
-  height: 40px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 999px;
-  border: 1px solid #d9ddd4;
-  background: #fff;
-  color: #2f342d;
-  font-size: 18px;
-  line-height: 1;
-  cursor: pointer;
-  transition:
-    border-color 0.2s ease,
-    background-color 0.2s ease,
-    transform 0.2s ease;
-}
-.hgallery-btn:hover {
-  border-color: #78966c;
-  transform: translateY(-1px);
-}
-.hgallery-track {
-  display: flex;
-  gap: 22px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding: 4px max(18px, calc((100vw - 1180px) / 2 + 26px)) 16px;
-  scrollbar-width: none;
-}
-.hgallery-track::-webkit-scrollbar {
-  display: none;
-}
-.hgallery-track > * {
-  flex: 0 0 min(340px, 78vw);
-  scroll-snap-align: start;
-}
+/* 4. Article section — calm two-row grid (same rhythm as recipes) */
 
 /* Newsletter — scale + fade from center */
 .newsletter-reveal {

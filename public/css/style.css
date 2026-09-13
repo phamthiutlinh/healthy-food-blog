@@ -592,10 +592,7 @@ header {
   transform-origin: center;
 }
 
-/* Footer — fade upward */
-.footer-reveal {
-  --reveal-y: 28px;
-}
+
 
 /* 3D hover tilt for cards below the hero.
    Tilt owns the wrapper transform via JS (transition toggled in JS:
@@ -634,9 +631,6 @@ header {
   }
   header {
     animation: none;
-  }
-  .hgallery-track {
-    transform: none !important;
   }
   *,
   *::before,
@@ -679,13 +673,6 @@ header {
   }
   .reveal.is-visible {
     transform: translateY(0);
-  }
-  /* Gallery stays a native snap row on mobile */
-  .hgallery-controls {
-    display: none;
-  }
-  .hgallery-track {
-    transform: none !important;
   }
 }
 

@@ -76,7 +76,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           }}
         />
         <noscript>
-          <style>{`.reveal,.recipe-card,.mealprep-copy,.mealprep-image,.hero-copy>*{opacity:1!important;transform:none!important;animation:none!important;}.hgallery{height:auto;}.hgallery-sticky{position:static;height:auto;}`}</style>
+          <style>{`.reveal,.recipe-card,.mealprep-copy,.mealprep-image,.hero-copy>*{opacity:1!important;transform:none!important;animation:none!important;}`}</style>
         </noscript>
       </head>
       <body>{children}</body>

@@ -5,14 +5,7 @@ import { ArrowUp } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import type { Article, Recipe } from '../../lib/content';
 import { ChatWidget } from './chatbot';
-import {
-  HorizontalGallery,
-  Parallax,
-  RecipeReveal,
-  Reveal,
-  Tilt,
-  useHeroParallax,
-} from './parallax';
+import { Parallax, RecipeReveal, Reveal, Tilt, useHeroParallax } from './parallax';
 import { ContentCard, SectionHeader } from './ui';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
@@ -430,9 +423,9 @@ export function HomePage({ recipes, articles }: { recipes: Recipe[]; articles: A
         </div>
       </section>
 
-      {/* Articles — pinned horizontal gallery driven by vertical scroll */}
-      <Reveal variant="up" once={false}>
-        <div className="mx-auto max-w-[1180px] px-4 pt-5 md:px-8 md:pt-10">
+      {/* Articles — calm two-row grid, same rhythm as the recipe section */}
+      <section className="overflow-guard mx-auto max-w-[1180px] px-4 py-5 md:px-8 md:py-10">
+        <Reveal variant="up" once={false}>
           <SectionHeader
             eyebrow="📝 Góc sống khỏe"
             title={
@@ -442,18 +435,21 @@ export function HomePage({ recipes, articles }: { recipes: Recipe[]; articles: A
             }
             href="/articles"
           />
-          <p className="mb-2 hidden text-[13px] text-[#74776f] md:block">
-            Kéo ngang hoặc dùng nút ← → để xem thêm bài viết.
-          </p>
+        </Reveal>
+        <div className="recipe-stagger grid gap-[22px] [perspective:1000px] md:grid-cols-3">
+          {latest.slice(0, 6).map((a, i) => (
+            <RecipeReveal
+              key={a.id}
+              direction={recipeDirections[i % 3]}
+              delay={[0, 120, 240][i % 3]}
+            >
+              <Tilt max={6} scale={1.02}>
+                <ArticleCard article={a} />
+              </Tilt>
+            </RecipeReveal>
+          ))}
         </div>
-      </Reveal>
-      <HorizontalGallery className="overflow-guard">
-        {latest.slice(0, 6).map((a) => (
-          <Tilt key={a.id} max={6} scale={1.02}>
-            <ArticleCard article={a} />
-          </Tilt>
-        ))}
-      </HorizontalGallery>
+      </section>
 
       {/* Newsletter — scale + fade from center */}
       <Reveal variant="zoom" once={false} className="newsletter-reveal">

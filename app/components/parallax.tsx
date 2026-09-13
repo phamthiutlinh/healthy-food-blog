@@ -227,58 +227,6 @@ export function RecipeReveal({
 }
 
 /**
- * HorizontalGallery — calm horizontal snap carousel for article cards.
- * Native overflow-x scrolling (touch swipe + wheel) with arrow buttons on
- * desktop. No pinned/sticky scrub, so it never leaves a tall empty spacer
- * or traps cards under the sticky site header.
- */
-export function HorizontalGallery({
-  children,
-  className = '',
-  label = 'Danh sách bài viết',
-}: {
-  children: ReactNode;
-  className?: string;
-  label?: string;
-}) {
-  const trackRef = useRef<HTMLDivElement>(null);
-
-  const scrollByStep = (direction: 1 | -1) => {
-    const track = trackRef.current;
-    if (!track) return;
-    const firstCard = track.querySelector<HTMLElement>(':scope > *');
-    const step = (firstCard?.offsetWidth ?? 340) + 22;
-    track.scrollBy({ left: direction * step, behavior: 'smooth' });
-  };
-
-  return (
-    <section className={`hgallery ${className}`} aria-label={label}>
-      <div className="hgallery-controls">
-        <button
-          type="button"
-          className="hgallery-btn"
-          onClick={() => scrollByStep(-1)}
-          aria-label="Xem bài viết trước"
-        >
-          ←
-        </button>
-        <button
-          type="button"
-          className="hgallery-btn"
-          onClick={() => scrollByStep(1)}
-          aria-label="Xem bài viết tiếp theo"
-        >
-          →
-        </button>
-      </div>
-      <div ref={trackRef} className="hgallery-track">
-        {children}
-      </div>
-    </section>
-  );
-}
-
-/**
  * Tilt — mouse-driven 3D tilt (rotateX/rotateY) with perspective.
  * For hover 3D on cards below the hero. Owns its own transform,
  * so nest it INSIDE Reveal (not the other way around).

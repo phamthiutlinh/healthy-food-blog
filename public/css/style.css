@@ -422,17 +422,52 @@ main {
   opacity: 0;
   transform: translateY(var(--reveal-y, 24px));
   transition:
-    opacity 0.7s ease,
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.8s ease,
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* 3D entrance variants (hidden state) — used by sections below the hero */
+.reveal-up {
+  transform: translateY(var(--reveal-y, 28px));
+}
+.reveal-zoom {
+  transform: scale(0.92) translateY(16px);
+}
+.reveal-flip {
+  transform: perspective(900px) rotateX(12deg) translateY(20px);
+  transform-origin: center top;
+}
+.reveal-flip-up {
+  transform: perspective(1000px) rotateX(-14deg) translateY(36px) scale(0.97);
+  transform-origin: center bottom;
+}
+.reveal-left {
+  transform: translateX(-48px) perspective(800px) rotateY(8deg);
+}
+.reveal-right {
+  transform: translateX(48px) perspective(800px) rotateY(-8deg);
 }
 .reveal.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: perspective(900px) rotateX(0) rotateY(0) translate(0, 0) scale(1);
 }
 @media (prefers-reduced-motion: reduce) {
   .reveal {
     opacity: 1;
     transform: none;
+    transition: none;
+  }
+}
+
+/* 3D hover tilt for cards below the hero */
+.tilt {
+  transition: transform 0.25s ease-out;
+  transform-style: preserve-3d;
+}
+.tilt:hover {
+  transition: transform 0.1s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tilt {
     transition: none;
   }
 }

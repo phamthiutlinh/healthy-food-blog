@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { ArrowUp } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import type { Article, Recipe } from '../../lib/content';
+import { getCookLessons, type CookLesson } from '../../lib/cook';
 import { ChatWidget } from './chatbot';
 import { Parallax, RecipeReveal, Reveal, Tilt, useHeroParallax } from './parallax';
 import { ContentCard, SectionHeader } from './ui';
@@ -285,6 +286,75 @@ export function PageIntro({
   );
 }
 
+export function CookGuideSection({ recipes }: { recipes: Recipe[] }) {
+  const items = getCookLessons()
+    .map((lesson) => ({ lesson, recipe: recipes.find((r) => r.slug === lesson.slug) }))
+    .filter((entry): entry is { lesson: CookLesson; recipe: Recipe } => Boolean(entry.recipe));
+
+  if (!items.length) return null;
+
+  return (
+    <section
+      id="huong-dan"
+      className="overflow-guard mx-auto max-w-[1180px] scroll-mt-[80px] px-4 py-5 md:px-8 md:py-10"
+    >
+      <div className="mb-[26px] flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <p className="eyebrow">🍳 Nấu cùng Lyn</p>
+          <h2 className="mt-3 font-['Playfair_Display'] text-[clamp(30px,4vw,48px)]">
+            Hướng dẫn <span className="text-highlight">từng bước</span>
+          </h2>
+          <p className="mt-3 max-w-[560px] text-[15px] text-[#74776f]">
+            Mỗi bước có hình minh họa, hẹn giờ và dấu hiệu để biết món đã đạt — như có người đứng
+            cạnh bếp.
+          </p>
+        </div>
+        <span className="rounded-full border border-[#e2d9c2] bg-white px-3.5 py-1.5 text-[12px] font-semibold text-[#a8895f]">
+          {items.length} món có chế độ nấu
+        </span>
+      </div>
+      <div className="grid gap-[18px] md:grid-cols-3">
+        {items.map(({ lesson, recipe }) => (
+          <Link
+            key={lesson.slug}
+            href={`/recipe-detail/${lesson.slug}/cook`}
+            className="group flex flex-col overflow-hidden rounded-2xl border border-[#e7e5df] bg-white shadow-[0_4px_16px_rgba(47,52,45,.07)] transition hover:-translate-y-0.5 hover:border-[#c86a3c] hover:shadow-[0_12px_26px_rgba(47,52,45,.12)]"
+          >
+            <div className="relative h-[150px] overflow-hidden bg-[#eae3d0]">
+              <img
+                className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
+                src={image(recipe.image)}
+                alt={recipe.title}
+                loading="lazy"
+                decoding="async"
+                onError={(event) => {
+                  event.currentTarget.onerror = null;
+                  event.currentTarget.src = '/assets/images/recipe-placeholder.svg';
+                }}
+              />
+              <span className="absolute left-3 top-3 rounded-full bg-[#fdf1e6]/95 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[.1em] text-[#b1542a]">
+                {lesson.steps.length} bước
+              </span>
+            </div>
+            <div className="flex flex-1 flex-col p-4">
+              <h3 className="line-clamp-2 font-['Playfair_Display'] text-[20px] leading-[1.2]">
+                {recipe.title}
+              </h3>
+              <p className="mt-1 line-clamp-2 text-[13px] text-[#565a52]">{recipe.description}</p>
+              <p className="mt-2 text-[11px] text-[#a8895f]">
+                {lesson.equipment} · ~{lesson.totalMinutes} phút
+              </p>
+              <span className="mt-auto border-t border-[#f0ede8] pt-3 text-[12px] font-bold text-[#c86a3c]">
+                Bắt đầu nấu →
+              </span>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export function HomePage({ recipes, articles }: { recipes: Recipe[]; articles: Article[] }) {
   const latest = [...articles]
     .sort((a, b) =>
@@ -381,6 +451,8 @@ export function HomePage({ recipes, articles }: { recipes: Recipe[]; articles: A
           ))}
         </div>
       </section>
+
+      <CookGuideSection recipes={recipes} />
 
       {/* Meal-prep — split 3D reveal: text from left, image from right */}
       <section className="overflow-guard bg-[#e8dfd0] py-[52px] [perspective:1200px] md:py-[76px]">

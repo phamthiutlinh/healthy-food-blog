@@ -1,6 +1,8 @@
 'use client';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { Article, Recipe } from '../../lib/content';
+import { getCookLesson } from '../../lib/cook';
 import { Shell } from './site';
 const img = (v?: string) => v || '/assets/images/recipe-placeholder.svg';
 const defaultTags: Record<string, string[]> = {
@@ -13,6 +15,7 @@ export function DetailPage({ item, type }: { item: Recipe | Article; type: 'reci
   const router = useRouter();
   const recipe = type === 'recipe' ? (item as Recipe) : null;
   const article = type === 'article' ? (item as Article) : null;
+  const cookLesson = recipe ? getCookLesson(recipe.slug) : undefined;
   return (
     <Shell page={`${type}Detail`} active={type === 'recipe' ? '/recipes' : '/articles'}>
       <main className="mx-auto max-w-[1180px] px-4 py-5 md:px-8 md:py-10">
@@ -63,6 +66,27 @@ export function DetailPage({ item, type }: { item: Recipe | Article; type: 'reci
               <Stat value={recipe.servings} label="khẩu phần" />
               <Stat value={recipe.calories} label="kcal / phần" />
             </div>
+          ) : null}
+          {cookLesson ? (
+            <Link
+              href={`/recipe-detail/${recipe!.slug}/cook`}
+              className="my-[26px] flex flex-col gap-2 rounded-2xl border border-[#e2d9c2] bg-[#fdf1e6] p-5 transition hover:-translate-y-px hover:border-[#c86a3c] hover:shadow-[0_10px_24px_rgba(200,106,60,.14)] sm:flex-row sm:items-center sm:justify-between"
+            >
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-[.16em] text-[#b1542a]">
+                  Chế độ nấu · dẫn từng bước
+                </p>
+                <p className="mt-1 font-['Playfair_Display'] text-[22px] leading-tight">
+                  Nấu cùng Lyn
+                </p>
+                <p className="mt-1 text-[13px] text-[#7a6a55]">
+                  {cookLesson.steps.length} bước có hình minh họa, hẹn giờ, nhiệt độ và dấu hiệu đạt.
+                </p>
+              </div>
+              <span className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#c86a3c] px-5 py-2.5 text-[13px] font-bold text-white">
+                Bắt đầu nấu →
+              </span>
+            </Link>
           ) : null}
           {recipe ? <RecipeBody recipe={recipe} /> : <ArticleBody article={article!} />}
         </article>

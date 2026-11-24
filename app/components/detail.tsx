@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { Article, Recipe } from '../../lib/content';
-import { getCookLesson } from '../../lib/cook';
+import { cookClipSrc, getCookLesson, type CookLesson } from '../../lib/cook';
 import { Shell } from './site';
 const img = (v?: string) => v || '/assets/images/recipe-placeholder.svg';
 const defaultTags: Record<string, string[]> = {
@@ -88,13 +88,17 @@ export function DetailPage({ item, type }: { item: Recipe | Article; type: 'reci
               </span>
             </Link>
           ) : null}
-          {recipe ? <RecipeBody recipe={recipe} /> : <ArticleBody article={article!} />}
+          {recipe ? (
+            <RecipeBody recipe={recipe} cookLesson={cookLesson} />
+          ) : (
+            <ArticleBody article={article!} />
+          )}
         </article>
       </main>
     </Shell>
   );
 }
-function RecipeBody({ recipe }: { recipe: Recipe }) {
+function RecipeBody({ recipe, cookLesson }: { recipe: Recipe; cookLesson?: CookLesson }) {
   const profile: Record<string, any> = {
     'Bữa sáng': {
       tags: ['Bữa sáng lành mạnh', 'Năng lượng bền vững'],
@@ -127,7 +131,70 @@ function RecipeBody({ recipe }: { recipe: Recipe }) {
       <p>Ưu tiên nguyên liệu tươi; bạn có thể thay thế linh hoạt nhưng nên giữ tỷ lệ tương tự.</p>
       {list(recipe.ingredients || [])}
       <h2>Hướng dẫn từng bước</h2>
-      <ol>{(recipe.steps || []).map((x: string, i: number) => <li key={x}><b>Bước {i + 1}: </b>{x}</li>)}</ol>
+      {cookLesson ? (
+        <>
+          <p className="mt-2 text-[13px] text-[#8b8578]">
+            GIF minh họa công đoạn (cắt từ video Pexels) ·{' '}
+            <Link
+              href={`/recipe-detail/${recipe.slug}/cook`}
+              className="font-semibold text-[#c86a3c] underline underline-offset-2"
+            >
+              mở chế độ nấu
+            </Link>
+          </p>
+          <ol className="mt-4 space-y-3">
+            {cookLesson.steps.map((step, i) => (
+              <li
+                key={step.title}
+                className="flex items-start gap-3 rounded-xl border border-[#e7e5df] bg-white p-3"
+              >
+                <span className="relative block h-[74px] w-[118px] shrink-0 overflow-hidden rounded-lg bg-[#eae3d0]">
+                  <img
+                    src={step.photo}
+                    alt={step.photoAlt}
+                    width={480}
+                    height={300}
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                    draggable={false}
+                  />
+                  <img
+                    src={cookClipSrc(step.motion)}
+                    alt=""
+                    width={480}
+                    height={300}
+                    className="absolute inset-0 h-full w-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                    draggable={false}
+                  />
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-[10px] font-bold uppercase tracking-[.12em] text-[#a8895f]">
+                    Bước {i + 1}
+                  </span>
+                  <b className="mt-0.5 block text-[15px] leading-snug text-[#2f342d]">
+                    {step.title}
+                  </b>
+                  <span className="mt-1 block text-[13px] leading-[1.6] text-[#565a52]">
+                    {step.instruction}
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ol>
+        </>
+      ) : (
+        <ol>
+          {(recipe.steps || []).map((x: string, i: number) => (
+            <li key={x}>
+              <b>Bước {i + 1}: </b>
+              {x}
+            </li>
+          ))}
+        </ol>
+      )}
       <h2>Biến tấu theo ý thích</h2>{list(d.variations)}
       <h2>Gợi ý dùng món</h2><p>{d.serving}</p>
       <h2>Mẹo để món ngon hơn</h2>{list(d.tips)}

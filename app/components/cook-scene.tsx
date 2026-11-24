@@ -1,33 +1,5 @@
-import type { CookLesson, CookStep } from '../../lib/cook';
+import { cookClipSrc, type CookLesson, type CookStep } from '../../lib/cook';
 import { IngredientIcon } from './cook-icons';
-
-/**
- * Clip minh họa công đoạn cắt từ video Pexels (giấy phép Pexels, miễn phí).
- * Mỗi công đoạn dùng chung một GIF để khỏi phải tải 18 file.
- */
-const CLIP_BY_MOTION: Record<string, string> = {
-  chop: 'chop',
-  slice: 'slice',
-  cut: 'slice',
-  stir: 'stir',
-  pat: 'pat',
-  marinate: 'marinate',
-  score: 'score',
-  season: 'season',
-  'hot-pan': 'hot-pan',
-  sear: 'sear',
-  steam: 'steam',
-  wash: 'wash',
-  toss: 'toss',
-  plate: 'plate',
-  drizzle: 'drizzle',
-  rest: 'rest',
-};
-
-function clipSrc(motion: CookStep['motion']) {
-  const name = CLIP_BY_MOTION[motion] ?? 'chop';
-  return `/assets/images/cook/clips/${name}.gif`;
-}
 
 function formatClock(seconds: number) {
   return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
@@ -76,7 +48,7 @@ export function CookScene({
         {/* GIF minh họa công đoạn của bước đang chọn */}
         <div key={index} className="cook-clip" aria-hidden="true">
           <img
-            src={clipSrc(step.motion)}
+            src={cookClipSrc(step.motion)}
             alt=""
             width={480}
             height={300}

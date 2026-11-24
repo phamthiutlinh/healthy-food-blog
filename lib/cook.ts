@@ -59,6 +59,33 @@ export type CookMotion =
   | 'drizzle'
   | 'plate';
 
+/**
+ * Mỗi công đoạn dùng chung một GIF để khỏi phải tải 18 file.
+ */
+const CLIP_BY_MOTION: Record<CookMotion, string> = {
+  chop: 'chop',
+  slice: 'slice',
+  cut: 'slice',
+  stir: 'stir',
+  pat: 'pat',
+  marinate: 'marinate',
+  score: 'score',
+  season: 'season',
+  'hot-pan': 'hot-pan',
+  sear: 'sear',
+  steam: 'steam',
+  wash: 'wash',
+  toss: 'toss',
+  plate: 'plate',
+  drizzle: 'drizzle',
+  rest: 'rest',
+};
+
+/** Đường dẫn GIF minh họa công đoạn trong public/assets/images/cook/clips. */
+export function cookClipSrc(motion: CookMotion) {
+  return `/assets/images/cook/clips/${CLIP_BY_MOTION[motion] ?? 'chop'}.gif`;
+}
+
 export type CookStep = {
   title: string;
   instruction: string;

@@ -879,9 +879,11 @@ header {
   }
 }
 
+/* GIF minh họa công đoạn là nội dung hướng dẫn, vẫn hiện khi người dùng
+   bật "giảm chuyển động"; chỉ tắt hiệu ứng fade và các chuyển động phụ. */
 @media (prefers-reduced-motion: reduce) {
   .cook-clip {
-    display: none;
+    animation: none;
   }
 
   .cook-frame[data-active='true'] .cook-photo,

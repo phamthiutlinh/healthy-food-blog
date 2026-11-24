@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { CookLesson, CookStep, Heat } from '../../lib/cook';
+import { IngredientIcon } from './cook-icons';
 import { CookScene } from './cook-scene';
 import { Shell } from './site';
 
@@ -13,8 +14,6 @@ const TABS: { id: Tab; label: string }[] = [
   { id: 'why', label: 'Giải thích' },
   { id: 'cue', label: 'Dấu hiệu đạt' },
 ];
-
-const STEP_ICONS = ['🔪', '🥣', '⏱', '🍳', '🔥', '🍽'];
 
 const HEAT_LEVEL: Record<Heat, number> = { low: 1, medium: 2, high: 3 };
 
@@ -66,7 +65,11 @@ function Timer({ seconds, stepKey }: { seconds: number; stepKey: number }) {
           {formatTime(left)}
         </p>
         <p className="mt-1 text-[11px] text-[#8b8578]">
-          {done ? 'Hết giờ — sang bước tiếp theo' : running ? 'Đang đếm ngược' : 'Bấm chạy khi bắt đầu làm'}
+          {done
+            ? 'Hết giờ — sang bước tiếp theo'
+            : running
+              ? 'Đang đếm ngược'
+              : 'Bấm chạy khi bắt đầu làm'}
         </p>
       </div>
       <div className="flex gap-1.5">
@@ -142,7 +145,7 @@ export function CookModePage({ lesson, recipeTitle }: { lesson: CookLesson; reci
       setIndex(Math.max(0, Math.min(steps.length - 1, next)));
       setTab('guide');
     },
-    [steps.length],
+    [steps.length]
   );
 
   useEffect(() => {
@@ -196,7 +199,9 @@ export function CookModePage({ lesson, recipeTitle }: { lesson: CookLesson; reci
               <p className="text-[11px] text-[#8b8578]">~{lesson.totalMinutes} phút</p>
             </div>
             <div className="rounded-xl border border-[#e2d9c2] bg-white px-3 py-2 text-center">
-              <p className="text-[10px] font-bold uppercase tracking-[.12em] text-[#a8895f]">Bước</p>
+              <p className="text-[10px] font-bold uppercase tracking-[.12em] text-[#a8895f]">
+                Bước
+              </p>
               <p className="font-['Playfair_Display'] text-[18px] leading-none">
                 {index + 1}
                 <span className="text-[13px] text-[#8b8578]">/{steps.length}</span>
@@ -213,17 +218,21 @@ export function CookModePage({ lesson, recipeTitle }: { lesson: CookLesson; reci
         </div>
 
         <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start">
-          {/* Khay bếp */}
+          {/* Ảnh thật của bước + icon nguyên liệu */}
           <div>
-            <CookScene lesson={lesson} step={step} />
+            <CookScene lesson={lesson} steps={steps} index={index} />
             <p className="mt-2 px-1 text-[12px] text-[#8b8578]">
-              Bước đang chọn được tô sáng trên khay bếp · dùng ← → để chuyển bước
+              Ảnh thật của bước đang chọn · mỗi nguyên liệu có icon riêng · dùng ← → để chuyển bước
             </p>
           </div>
 
           {/* Panel hướng dẫn */}
           <section className="rounded-2xl border border-[#e2d9c2] bg-[#fbf8ef] p-4 shadow-[0_8px_24px_rgba(47,52,45,.08)] md:p-5">
-            <div className="flex gap-1 rounded-full bg-[#f1ecdb] p-1" role="tablist" aria-label="Nội dung bước">
+            <div
+              className="flex gap-1 rounded-full bg-[#f1ecdb] p-1"
+              role="tablist"
+              aria-label="Nội dung bước"
+            >
               {TABS.map((item) => (
                 <button
                   key={item.id}
@@ -253,15 +262,24 @@ export function CookModePage({ lesson, recipeTitle }: { lesson: CookLesson; reci
                 {done.has(index) ? '✓' : index + 1}
               </span>
               <div className="min-w-0">
-                <h2 className="font-['Playfair_Display'] text-[22px] leading-tight">{step.title}</h2>
-                <p className="mt-1 text-[10px] font-bold uppercase tracking-[.12em] text-[#a8895f]">
-                  {STEP_ICONS[index % STEP_ICONS.length]}{' '}
-                  {tab === 'guide' ? 'Các bước làm' : tab === 'why' ? 'Vì sao lại vậy' : 'Nhìn gì để biết đạt'}
+                <h2 className="font-['Playfair_Display'] text-[22px] leading-tight">
+                  {step.title}
+                </h2>
+                <p className="mt-1 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[.12em] text-[#a8895f]">
+                  <IngredientIcon id={step.items[0].icon} className="h-4 w-4" />
+                  {tab === 'guide'
+                    ? 'Các bước làm'
+                    : tab === 'why'
+                      ? 'Vì sao lại vậy'
+                      : 'Nhìn gì để biết đạt'}
                 </p>
               </div>
             </div>
 
-            <p className="mt-3 min-h-[76px] text-[14px] leading-[1.7] text-[#454b41]">
+            <p
+              key={`${index}-${tab}`}
+              className="cook-swap mt-3 min-h-[76px] text-[14px] leading-[1.7] text-[#454b41]"
+            >
               {tab === 'guide' ? step.instruction : tab === 'why' ? step.why : step.cue}
             </p>
 
@@ -330,34 +348,49 @@ export function CookModePage({ lesson, recipeTitle }: { lesson: CookLesson; reci
                   data-step={i}
                   onClick={() => goTo(i)}
                   aria-current={isActive ? 'step' : undefined}
-                  className={`min-w-[158px] shrink-0 snap-center rounded-xl border px-[14px] py-[11px] text-left transition md:min-w-[176px] ${
+                  className={`group min-w-[158px] shrink-0 snap-center overflow-hidden rounded-xl border text-left transition md:min-w-[176px] ${
                     isActive
-                      ? 'border-[#c86a3c] bg-[#fdf1e6] shadow-[0_6px_16px_rgba(200,106,60,.14)]'
-                      : 'border-[#e2d9c2] bg-white hover:border-[#b9c9ae]'
+                      ? 'border-[#c86a3c] shadow-[0_8px_20px_rgba(200,106,60,.18)]'
+                      : 'border-[#e2d9c2] hover:border-[#b9c9ae]'
                   }`}
                 >
-                  <span className="flex items-center justify-between gap-2">
-                    <span
-                      className={`text-[11px] font-bold ${isActive ? 'text-[#b1542a]' : 'text-[#8b8578]'}`}
-                    >
+                  <span className="relative block h-[64px] w-full overflow-hidden bg-[#eae3d0]">
+                    <img
+                      src={item.photo}
+                      alt=""
+                      className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.06]"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <span className="absolute inset-0 bg-[linear-gradient(180deg,rgba(18,16,12,.45)_0%,rgba(18,16,12,0)_60%,rgba(18,16,12,.18)_100%)]" />
+                    <span className="absolute left-2 top-1.5 text-[10px] font-bold tracking-[.08em] text-white/95">
                       BƯỚC {i + 1}
                     </span>
                     {done.has(i) ? (
-                      <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-[#5d874f] text-[9px] text-white">
+                      <span className="absolute right-2 top-1.5 inline-flex h-4 w-4 items-center justify-center rounded-full bg-[#5d874f] text-[9px] text-white">
                         ✓
                       </span>
                     ) : (
-                      <span className="text-[13px] leading-none opacity-70">
-                        {STEP_ICONS[i % STEP_ICONS.length]}
-                      </span>
+                      <IngredientIcon
+                        id={item.items[0].icon}
+                        className="absolute bottom-1.5 right-1.5 h-5 w-5 rounded-full bg-[#fbf8ef]/90 p-[1px]"
+                      />
                     )}
                   </span>
-                  <span className="mt-1 block text-[13px] font-semibold leading-snug text-[#3b4238]">
-                    {item.title}
+                  <span
+                    className={`block px-[13px] pb-[11px] pt-2 ${isActive ? 'bg-[#fdf1e6]' : 'bg-white'}`}
+                  >
+                    <span
+                      className={`block text-[13px] font-semibold leading-snug ${isActive ? 'text-[#b1542a]' : 'text-[#3b4238]'}`}
+                    >
+                      {item.title}
+                    </span>
+                    {item.timerSeconds ? (
+                      <span className="mt-1 block text-[11px] text-[#a8895f]">
+                        ⏱ {formatTime(item.timerSeconds)}
+                      </span>
+                    ) : null}
                   </span>
-                  {item.timerSeconds ? (
-                    <span className="mt-1 block text-[11px] text-[#a8895f]">⏱ {formatTime(item.timerSeconds)}</span>
-                  ) : null}
                 </button>
               );
             })}

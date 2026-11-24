@@ -37,6 +37,28 @@ export type CookStepItem = {
   label: string;
 };
 
+/**
+ * Công đoạn của một bước nấu — mỗi loại ứng với một GIF minh họa trong
+ * public/assets/images/cook/clips/{motion}.gif (cắt từ video Pexels).
+ */
+export type CookMotion =
+  | 'chop'
+  | 'slice'
+  | 'cut'
+  | 'pat'
+  | 'score'
+  | 'season'
+  | 'wash'
+  | 'stir'
+  | 'marinate'
+  | 'hot-pan'
+  | 'sear'
+  | 'steam'
+  | 'rest'
+  | 'toss'
+  | 'drizzle'
+  | 'plate';
+
 export type CookStep = {
   title: string;
   instruction: string;
@@ -49,6 +71,8 @@ export type CookStep = {
   /** Ảnh thật của bước, nằm trong public/assets/images/cook. */
   photo: string;
   photoAlt: string;
+  /** Minh họa động của công đoạn, phát lặp trên nền ảnh thật. */
+  motion: CookMotion;
   /** Nguyên liệu & dụng cụ của bước, mỗi thứ một icon hoạt hình. */
   items: CookStepItem[];
 };
@@ -77,6 +101,7 @@ const lessons: CookLesson[] = [
         cue: 'Bề mặt mờ, không còn vệt ướt bóng và các miếng đều cỡ ngón tay cái.',
         photo: '/assets/images/cook/teriyaki-1-chicken-board.jpg',
         photoAlt: 'Ức gà sống đặt trên thớt gỗ, cạnh khăn giấy và dao',
+        motion: 'chop',
         items: [
           { icon: 'chicken', label: 'Ức gà 200g' },
           { icon: 'towel', label: 'Khăn giấy' },
@@ -93,6 +118,7 @@ const lessons: CookLesson[] = [
         timerSeconds: 60,
         photo: '/assets/images/cook/teriyaki-2-sauce.jpg',
         photoAlt: 'Bát sốt teriyaki màu nâu sẫm đặt trên chiếu tre',
+        motion: 'stir',
         items: [
           { icon: 'sauce', label: 'Sốt teriyaki 3 thìa' },
           { icon: 'spoon', label: 'Nước ấm 1 thìa' },
@@ -109,6 +135,7 @@ const lessons: CookLesson[] = [
         timerSeconds: 600,
         photo: '/assets/images/cook/teriyaki-3-marinate.jpg',
         photoAlt: 'Thịt gà đã ướp cùng hương thảo trên thớt',
+        motion: 'marinate',
         items: [
           { icon: 'chicken', label: 'Gà áo sốt' },
           { icon: 'bowl', label: 'Bát trộn' },
@@ -125,6 +152,7 @@ const lessons: CookLesson[] = [
         temperature: { label: 'Chảo 190–200°C · lửa vừa', heat: 'medium' },
         photo: '/assets/images/cook/teriyaki-4-sear.jpg',
         photoAlt: 'Miếng gà áp chảo vàng nâu trong chảo',
+        motion: 'sear',
         items: [
           { icon: 'pan', label: 'Chảo 26cm' },
           { icon: 'oil', label: 'Dầu 1 thìa' },
@@ -140,6 +168,7 @@ const lessons: CookLesson[] = [
         temperature: { label: 'Hơi nước 100°C · lửa vừa', heat: 'medium' },
         photo: '/assets/images/cook/teriyaki-5-broccoli.jpg',
         photoAlt: 'Bông cải xanh vừa hấp trong chảo đen',
+        motion: 'steam',
         items: [
           { icon: 'broccoli', label: 'Bông cải 150g' },
           { icon: 'steam', label: 'Hơi nước' },
@@ -154,6 +183,7 @@ const lessons: CookLesson[] = [
         cue: 'Sốt bóng nhẹ trên mặt gà, đáy hộp không có nước sốt chảy ra.',
         photo: '/assets/images/cook/teriyaki-6-bowl.jpg',
         photoAlt: 'Bát cơm gà teriyaki rưới sốt bóng, rắc vừng',
+        motion: 'plate',
         items: [
           { icon: 'rice-bowl', label: 'Cơm lứt' },
           { icon: 'chicken', label: 'Gà teriyaki' },
@@ -177,6 +207,7 @@ const lessons: CookLesson[] = [
         cue: 'Da khô hoàn toàn, miết tay thấy hơi ráp, không còn vảy bong.',
         photo: '/assets/images/cook/salmon-1-dry-skin.jpg',
         photoAlt: 'Miếng cá hồi tươi còn da nằm trên thớt',
+        motion: 'pat',
         items: [
           { icon: 'salmon', label: 'Cá hồi 2 miếng' },
           { icon: 'towel', label: 'Khăn giấy' },
@@ -191,6 +222,7 @@ const lessons: CookLesson[] = [
         cue: 'Đường khứa đứt lớp da nhưng không chạm vào phần thịt.',
         photo: '/assets/images/cook/salmon-2-score.jpg',
         photoAlt: 'Miếng cá hồi còn nguyên da, mặt da nhìn rõ thớ',
+        motion: 'score',
         items: [
           { icon: 'salmon', label: 'Mặt da' },
           { icon: 'knife', label: 'Khứa 3 đường' },
@@ -204,6 +236,7 @@ const lessons: CookLesson[] = [
         timerSeconds: 300,
         photo: '/assets/images/cook/salmon-3-season.jpg',
         photoAlt: 'Cá hồi rắc muối hạt, tiêu và chanh',
+        motion: 'season',
         items: [
           { icon: 'salt', label: 'Muối + tiêu' },
           { icon: 'lemon', label: 'Chanh' },
@@ -220,6 +253,7 @@ const lessons: CookLesson[] = [
         temperature: { label: 'Chảo 200–210°C · lửa lớn rồi hạ vừa', heat: 'high' },
         photo: '/assets/images/cook/salmon-4-hot-pan.jpg',
         photoAlt: 'Chảo gang nóng trên bếp với miếng cá hồi',
+        motion: 'hot-pan',
         items: [
           { icon: 'pan', label: 'Chảo gang' },
           { icon: 'oil', label: 'Dầu ô liu' },
@@ -236,6 +270,7 @@ const lessons: CookLesson[] = [
         temperature: { label: 'Mặt chảo 180°C · lửa vừa', heat: 'medium' },
         photo: '/assets/images/cook/salmon-5-skin-sear.jpg',
         photoAlt: 'Cá hồi áp mặt da trong chảo, da vàng giòn',
+        motion: 'sear',
         items: [
           { icon: 'salmon', label: 'Mặt da xuống' },
           { icon: 'tongs', label: 'Ấn nhẹ 20 giây' },
@@ -251,6 +286,7 @@ const lessons: CookLesson[] = [
         timerSeconds: 120,
         photo: '/assets/images/cook/salmon-6-plated.jpg',
         photoAlt: 'Cá hồi áp chảo ăn cùng măng tây, chanh và khoai',
+        motion: 'rest',
         items: [
           { icon: 'salmon', label: 'Cá hồi' },
           { icon: 'asparagus', label: 'Măng tây' },
@@ -273,6 +309,7 @@ const lessons: CookLesson[] = [
         cue: 'Rau ráo, lắc bát không thấy nước đọng ở đáy.',
         photo: '/assets/images/cook/salad-1-wash-greens.jpg',
         photoAlt: 'Hai tay rửa xà lách tươi dưới vòi nước',
+        motion: 'wash',
         items: [
           { icon: 'lettuce', label: 'Xà lách 100g' },
           { icon: 'bowl', label: 'Rổ quay' },
@@ -289,6 +326,7 @@ const lessons: CookLesson[] = [
         temperature: { label: 'Chảo 190°C · lửa vừa', heat: 'medium' },
         photo: '/assets/images/cook/salad-2-chicken-pan.jpg',
         photoAlt: 'Thịt gà vàng cạnh đang áp chảo trong chảo',
+        motion: 'sear',
         items: [
           { icon: 'chicken', label: 'Ức gà' },
           { icon: 'pan', label: 'Chảo' },
@@ -304,6 +342,7 @@ const lessons: CookLesson[] = [
         timerSeconds: 300,
         photo: '/assets/images/cook/salad-3-sliced.jpg',
         photoAlt: 'Ức gà áp chảo thái lát xếp trên thớt',
+        motion: 'slice',
         items: [
           { icon: 'chicken', label: 'Gà chín' },
           { icon: 'knife', label: 'Lát 1cm' },
@@ -318,6 +357,7 @@ const lessons: CookLesson[] = [
         cue: 'Miếng bơ còn cạnh sắc, không bị nát hay dính vào lưỡi dao.',
         photo: '/assets/images/cook/salad-4-avocado.jpg',
         photoAlt: 'Quả bơ chín bổ đôi trên thớt gỗ',
+        motion: 'cut',
         items: [
           { icon: 'avocado', label: 'Bơ chín' },
           { icon: 'tomato', label: 'Cà chua bi' },
@@ -332,6 +372,7 @@ const lessons: CookLesson[] = [
         cue: 'Nguyên liệu rải đều, bát không có nước đọng sau khi trộn.',
         photo: '/assets/images/cook/salad-5-toss.jpg',
         photoAlt: 'Đĩa salad gà, bơ và cà chua đã trộn đều',
+        motion: 'toss',
         items: [
           { icon: 'salad-bowl', label: 'Bát lớn' },
           { icon: 'lettuce', label: 'Rau' },
@@ -346,6 +387,7 @@ const lessons: CookLesson[] = [
         cue: 'Rau bóng nhẹ vừa đủ, không ướt sũng và không có dầu đọng đáy bát.',
         photo: '/assets/images/cook/salad-6-dressing.jpg',
         photoAlt: 'Bát salad rưới dầu ô liu và chanh, còn tươi rói',
+        motion: 'drizzle',
         items: [
           { icon: 'oil', label: 'Dầu ô liu 1 thìa' },
           { icon: 'lemon', label: 'Nửa quả chanh' },

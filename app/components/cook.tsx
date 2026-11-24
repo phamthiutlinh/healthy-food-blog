@@ -222,7 +222,8 @@ export function CookModePage({ lesson, recipeTitle }: { lesson: CookLesson; reci
           <div>
             <CookScene lesson={lesson} steps={steps} index={index} />
             <p className="mt-2 px-1 text-[12px] text-[#8b8578]">
-              Ảnh thật của bước đang chọn · mỗi nguyên liệu có icon riêng · dùng ← → để chuyển bước
+              GIF minh họa công đoạn (cắt từ video Pexels) · mỗi nguyên liệu có icon riêng · dùng
+              ← → để chuyển bước
             </p>
           </div>
 

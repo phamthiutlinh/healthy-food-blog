@@ -10,3 +10,5 @@ dist/
 !.env.example
 public/swe-*
 public/workbox-*
+# Video gốc tải về khi tạo GIF minh họa (npm run fetch:cook-clips)
+scripts/.tmp-videos/

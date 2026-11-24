@@ -8,6 +8,7 @@
     "build": "next build --webpack",
     "start": "next start",
     "generate:icons": "node scripts/generate-icons.js",
+    "fetch:cook-clips": "node scripts/fetch-cook-clips.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
